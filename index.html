@@ -1,833 +1,161 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CMUEAA Alumni Dashboard</title>
-  <meta
-    name="description"
-    content="Dashboard สรุปฐานข้อมูลศิษย์เก่าวิศวกรรมศาสตร์ มช. และ LINE OA จากข้อมูลที่ตรวจสอบล่าสุด"
-  />
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #0b1020;
-      --surface: #111a2e;
-      --surface-2: #17233a;
-      --surface-3: #0f172a;
-      --line: #26364f;
-      --text: #f8fafc;
-      --muted: #a7b0c0;
-      --soft: #d8e0ee;
-      --blue: #1e6bff;
-      --cyan: #22d3ee;
-      --green: #16a34a;
-      --amber: #f59e0b;
-      --red: #ef4444;
-      --purple: #8b5cf6;
-      --radius: 16px;
-      --shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(30, 107, 255, 0.18), transparent 30rem),
-        linear-gradient(180deg, #09101f 0%, var(--bg) 48%, #080c16 100%);
-      color: var(--text);
-      font-family: "Sarabun", "Noto Sans Thai", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.65;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    .page {
-      width: min(1180px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 28px 0 56px;
-    }
-
-    .hero {
-      border: 1px solid rgba(216, 224, 238, 0.12);
-      border-radius: 24px;
-      background:
-        linear-gradient(135deg, rgba(17, 26, 46, 0.96), rgba(10, 15, 27, 0.94)),
-        radial-gradient(circle at top right, rgba(34, 211, 238, 0.16), transparent 28rem);
-      box-shadow: var(--shadow);
-      padding: clamp(24px, 4vw, 44px);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -110px -150px auto;
-      width: 320px;
-      height: 320px;
-      border: 1px solid rgba(30, 107, 255, 0.35);
-      border-radius: 50%;
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    .eyebrow {
-      color: var(--cyan);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    h1,
-    h2,
-    h3 {
-      line-height: 1.25;
-      margin: 0;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 4.8vw, 4.8rem);
-      letter-spacing: -0.02em;
-      max-width: 900px;
-    }
-
-    h2 {
-      font-size: clamp(1.35rem, 2.3vw, 2rem);
-      margin-bottom: 10px;
-    }
-
-    h3 {
-      font-size: 1rem;
-    }
-
-    .hero-copy {
-      color: var(--soft);
-      font-size: clamp(1rem, 1.7vw, 1.18rem);
-      max-width: 860px;
-      margin: 18px 0 0;
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(216, 224, 238, 0.16);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.055);
-      color: var(--soft);
-      font-size: 0.88rem;
-      padding: 7px 12px;
-      white-space: nowrap;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--blue);
-      box-shadow: 0 0 0 4px rgba(30, 107, 255, 0.18);
-      flex: 0 0 auto;
-    }
-
-    .section {
-      margin-top: 26px;
-      border: 1px solid rgba(216, 224, 238, 0.12);
-      border-radius: var(--radius);
-      background: rgba(17, 26, 46, 0.78);
-      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.16);
-      padding: clamp(18px, 3vw, 28px);
-    }
-
-    .section-head {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .section-head p {
-      margin: 6px 0 0;
-      color: var(--muted);
-    }
-
-    .grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .kpi-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .two-col {
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    }
-
-    .three-col {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .card {
-      border: 1px solid rgba(216, 224, 238, 0.12);
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.72);
-      padding: 17px;
-    }
-
-    .kpi {
-      min-height: 152px;
-    }
-
-    .kpi .label {
-      color: var(--muted);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    .kpi .value {
-      font-size: clamp(2rem, 4vw, 3.35rem);
-      font-weight: 800;
-      line-height: 1.05;
-      margin: 12px 0 8px;
-      letter-spacing: -0.03em;
-    }
-
-    .kpi p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    .accent-blue {
-      color: #7db0ff;
-    }
-
-    .accent-green {
-      color: #7ee2a8;
-    }
-
-    .accent-amber {
-      color: #ffd27a;
-    }
-
-    .accent-purple {
-      color: #c4b5fd;
-    }
-
-    .note {
-      border-left: 3px solid var(--blue);
-      background: rgba(30, 107, 255, 0.1);
-      border-radius: 0 12px 12px 0;
-      padding: 12px 14px;
-      color: var(--soft);
-      margin-top: 14px;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid rgba(216, 224, 238, 0.1);
-      border-radius: 14px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
-      background: rgba(15, 23, 42, 0.52);
-    }
-
-    th,
-    td {
-      border-bottom: 1px solid rgba(216, 224, 238, 0.1);
-      padding: 12px 14px;
-      vertical-align: top;
-      text-align: left;
-    }
-
-    th {
-      color: #e6eefb;
-      background: rgba(23, 35, 58, 0.92);
-      font-size: 0.9rem;
-      white-space: nowrap;
-    }
-
-    td {
-      color: var(--soft);
-    }
-
-    td.num {
-      color: var(--text);
-      font-weight: 800;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .bar-list {
-      display: grid;
-      gap: 16px;
-    }
-
-    .bar-item {
-      display: grid;
-      gap: 8px;
-    }
-
-    .bar-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      color: var(--soft);
-      font-weight: 700;
-    }
-
-    .bar-track {
-      height: 14px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: rgba(216, 224, 238, 0.1);
-    }
-
-    .bar-fill {
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      min-width: 4px;
-    }
-
-    .bar-fill.green {
-      background: linear-gradient(90deg, #16a34a, #7ee2a8);
-    }
-
-    .bar-fill.amber {
-      background: linear-gradient(90deg, #f59e0b, #ffd27a);
-    }
-
-    .quality-card strong {
-      display: block;
-      font-size: 1.75rem;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .quality-card span {
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .trend {
-      width: 100%;
-      height: auto;
-      border-radius: 14px;
-      background: rgba(8, 12, 22, 0.44);
-      border: 1px solid rgba(216, 224, 238, 0.1);
-    }
-
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 16px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-top: 12px;
-    }
-
-    .legend span {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .legend i {
-      width: 18px;
-      height: 3px;
-      border-radius: 99px;
-      display: inline-block;
-      background: var(--blue);
-    }
-
-    .legend .cyan i {
-      background: var(--cyan);
-    }
-
-    .legend .red i {
-      background: var(--red);
-    }
-
-    .actions {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      counter-reset: step;
-    }
-
-    .action {
-      counter-increment: step;
-      position: relative;
-      padding-top: 44px;
-    }
-
-    .action::before {
-      content: counter(step);
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      display: grid;
-      place-items: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--blue);
-      color: white;
-      font-weight: 800;
-      font-size: 0.9rem;
-    }
-
-    .action p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .footer {
-      color: #738197;
-      font-size: 0.86rem;
-      text-align: center;
-      margin-top: 26px;
-    }
-
-    @media (max-width: 980px) {
-      .kpi-grid,
-      .two-col,
-      .three-col,
-      .actions {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .page {
-        width: min(100% - 20px, 1180px);
-        padding-top: 10px;
-      }
-
-      .hero,
-      .section {
-        border-radius: 16px;
-      }
-
-      .kpi-grid,
-      .two-col,
-      .three-col,
-      .actions {
-        grid-template-columns: 1fr;
-      }
-
-      .section-head {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .pill {
-        white-space: normal;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMUEAA Alumni Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0f1419;--panel:#1a2026;--panel2:#222a32;--border:#2d3741;--text:#e8ecef;--muted:#8b98a5;--accent:#34d399;--warn:#fbbf24;--bad:#f87171;--blue:#60a5fa}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;padding:24px}
+.header{margin-bottom:24px}
+.header h1{font-size:26px;font-weight:700}
+.header .sub{color:var(--muted);font-size:14px;margin-top:4px}
+.badge{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:20px;padding:2px 12px;font-size:12px;color:var(--accent);margin-left:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.kpi .label{color:var(--muted);font-size:13px}
+.kpi .value{font-size:28px;font-weight:700;margin-top:4px}
+.kpi .pct{font-size:13px;color:var(--muted);margin-top:2px}
+.kpi.green .value{color:var(--accent)} .kpi.blue .value{color:var(--blue)} .kpi.warn .value{color:var(--warn)} .kpi.bad .value{color:var(--bad)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px}
+.card h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.card .note{color:var(--muted);font-size:12px;margin-bottom:12px}
+.span12{grid-column:span 12}.span8{grid-column:span 8}.span6{grid-column:span 6}.span4{grid-column:span 4}
+@media(max-width:900px){.span8,.span6,.span4{grid-column:span 12}}
+.chartbox{position:relative}
+.insight{background:var(--panel2);border-left:3px solid var(--accent);border-radius:6px;padding:10px 14px;font-size:13px;margin-top:12px;color:#c8d2da}
+.insight b{color:var(--accent)} .insight .w{color:var(--warn)} .insight .b{color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:500}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.footer{color:var(--muted);font-size:12px;margin-top:24px;text-align:center}
+</style>
 </head>
 <body>
-  <main class="page">
-    <header class="hero">
-      <div class="eyebrow">CMUEAA Alumni Dashboard</div>
-      <h1>Active User และฐานข้อมูลศิษย์เก่า วิศวกรรมศาสตร์ มช.</h1>
-      <p class="hero-copy">
-        Dashboard นี้อัปเดตจาก LINE OA Manager, หลังบ้านเว็บไซต์ Alumni และ CSV snapshot
-        โดยแยกนิยามตัวเลขสำคัญให้ชัดเจน เพื่อไม่ให้สับสนระหว่าง “คนที่ LINE เข้าถึงได้”
-        กับ “จำนวนสมาชิกในฐานข้อมูล”
-      </p>
-      <div class="hero-meta" aria-label="dashboard metadata">
-        <span class="pill"><span class="dot"></span>ตรวจสอบล่าสุด 10 มิ.ย. 2026</span>
-        <span class="pill"><span class="dot"></span>LINE OA: @entaneer</span>
-        <span class="pill"><span class="dot"></span>แหล่งข้อมูลหลัก: Website Admin + LINE OA Manager</span>
-      </div>
-    </header>
+<div class="header">
+  <h1>ฐานข้อมูลศิษย์เก่า คณะวิศวกรรมศาสตร์ มช. <span class="badge">CMUEAA</span></h1>
+  <div class="sub">ข้อมูลหลัง Data Cleansing &amp; Merge จากระบบ alumni.eng.cmu.ac.th — ณ 11 มิถุนายน 2569</div>
+</div>
 
-    <section class="section" aria-labelledby="kpi-title">
-      <div class="section-head">
-        <div>
-          <h2 id="kpi-title">ตัวเลขหลักที่ควรใช้</h2>
-          <p>เลข “Active user” ควรระบุที่มาทุกครั้ง โดยเฉพาะเมื่อใช้เพื่อวางแผนสื่อสารผ่าน LINE OA</p>
-        </div>
-      </div>
-      <div class="grid kpi-grid">
-        <article class="card kpi">
-          <div class="label">LINE Target Reach</div>
-          <div class="value accent-blue">5,289</div>
-          <p>ใช้เป็น Active / Reachable LINE Audience สำหรับ Broadcast และ PR reach</p>
-        </article>
-        <article class="card kpi">
-          <div class="label">LINE OA Friends Added</div>
-          <div class="value accent-green">5,865</div>
-          <p>จำนวนเพื่อนสะสมทั้งหมดใน LINE OA Manager ไม่ใช่จำนวนที่เข้าถึงได้จริง</p>
-        </article>
-        <article class="card kpi">
-          <div class="label">Website LINE Matched</div>
-          <div class="value accent-amber">3,396</div>
-          <p>Unique student IDs หลัง deduplicate จากรายงาน LINE ในหลังบ้านเว็บไซต์</p>
-        </article>
-        <article class="card kpi">
-          <div class="label">Approved Web Members</div>
-          <div class="value accent-purple">15,505</div>
-          <p>สมาชิกเว็บไซต์ที่อนุมัติแล้ว ใช้เป็นฐานสมาชิกกลาง ไม่ใช่ LINE active</p>
-        </article>
-      </div>
-      <p class="note">
-        สรุปนิยาม: ถ้าพูดถึงจำนวนคนที่ส่ง LINE OA ถึงได้ ให้ใช้ <strong>5,289</strong>.
-        ถ้าพูดถึงฐานสมาชิกเว็บไซต์ที่อนุมัติ ให้ใช้ <strong>15,505</strong>.
-      </p>
-    </section>
+<div class="kpis">
+  <div class="kpi"><div class="label">สมาชิกทั้งหมด (ไม่ซ้ำ)</div><div class="value">15,476</div><div class="pct">หลังลบ spam 11 + รวมซ้ำ 106</div></div>
+  <div class="kpi blue"><div class="label">สมัครผ่านระบบเอง</div><div class="value">5,338</div><div class="pct">34.5% ของทั้งหมด</div></div>
+  <div class="kpi warn"><div class="label">สมาชิกสถานะ Active</div><div class="value">1,057</div><div class="pct">6.8% ของทั้งหมด</div></div>
+  <div class="kpi green"><div class="label">เบอร์โทรติดต่อได้</div><div class="value">7,765</div><div class="pct">50.2% (normalize แล้ว)</div></div>
+  <div class="kpi green"><div class="label">อีเมลใช้ได้</div><div class="value">10,182</div><div class="pct">65.8%</div></div>
+  <div class="kpi green"><div class="label">ระบุจังหวัดได้</div><div class="value">11,387</div><div class="pct">73.6% (เดิม 16% → enrich จากรหัสไปรษณีย์)</div></div>
+  <div class="kpi blue"><div class="label">LINE OA เข้าถึงได้</div><div class="value">5,289</div><div class="pct">34.2% ของสมาชิก (บล็อค 360)</div></div>
+</div>
 
-    <section class="section" aria-labelledby="interpretation-title">
-      <div class="section-head">
-        <div>
-          <h2 id="interpretation-title">Executive Interpretation</h2>
-          <p>เลือกตัวเลขให้ตรงวัตถุประสงค์ของการรายงาน</p>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Metric</th>
-              <th>จำนวนที่ถูกต้อง</th>
-              <th>ใช้เมื่อ</th>
-              <th>อย่าสับสนกับ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Active / Reachable LINE Audience</td>
-              <td class="num">5,289</td>
-              <td>วางแผน Broadcast, LINE OA communication, PR reach</td>
-              <td>จำนวนสมาชิกเว็บไซต์หรือ CSV rows</td>
-            </tr>
-            <tr>
-              <td>Total LINE OA Friends</td>
-              <td class="num">5,865</td>
-              <td>รายงานจำนวนเพื่อนสะสมทั้งหมดของ LINE OA</td>
-              <td>Target reach ซึ่งหักข้อจำกัดการ block/targeting แล้ว</td>
-            </tr>
-            <tr>
-              <td>Website LINE-linked Users</td>
-              <td class="num">3,396</td>
-              <td>ทำ CRM, segmentation หรือจับคู่ LINE กับรหัสนักศึกษา</td>
-              <td>จำนวนคนที่ LINE OA เข้าถึงได้ทั้งหมด</td>
-            </tr>
-            <tr>
-              <td>Approved Website Members</td>
-              <td class="num">15,505</td>
-              <td>รายงานฐานสมาชิกกลางของเว็บไซต์</td>
-              <td>CSV snapshot หรือ LINE active</td>
-            </tr>
-            <tr>
-              <td>CSV Snapshot Rows</td>
-              <td class="num">15,581</td>
-              <td>ใช้เทียบประวัติ/ไฟล์อ้างอิงนอกระบบ</td>
-              <td>ฐานข้อมูลเว็บไซต์ปัจจุบัน</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+<div class="grid">
+  <div class="card span12">
+    <h3>การกระจายสมาชิกตามรุ่น (เกียร์ 1–57)</h3>
+    <div class="note">จำนวนสมาชิกในฐานข้อมูลแยกตามรุ่น</div>
+    <div class="chartbox" style="height:280px"><canvas id="cGear"></canvas></div>
+    <div class="insight">รุ่น <b>36–42</b> มีข้อมูลมากที่สุด (600+ คน/รุ่น) ขณะที่รุ่น <span class="b">43–49 ลดฮวบเหลือ 72–357 คน/รุ่น</span> — ช่องว่างข้อมูลที่ควรเร่งเก็บ ส่วนรุ่น 50 กลับมาที่ 305 คน (ระบบลงทะเบียนกิจกรรมช่วยดึง)</div>
+  </div>
 
-    <section class="section" aria-labelledby="coverage-title">
-      <div class="section-head">
-        <div>
-          <h2 id="coverage-title">Coverage และ Data Reconciliation</h2>
-          <p>ภาพรวมช่องว่างระหว่างฐานสมาชิก เว็บไซต์ และ LINE OA</p>
-        </div>
-      </div>
-      <div class="grid two-col">
-        <article class="card">
-          <h3>Coverage จากฐานสมาชิกสู่ LINE</h3>
-          <div class="bar-list" style="margin-top: 18px">
-            <div class="bar-item">
-              <div class="bar-top"><span>Approved Web Members</span><span>15,505</span></div>
-              <div class="bar-track"><div class="bar-fill green" style="width: 100%"></div></div>
-            </div>
-            <div class="bar-item">
-              <div class="bar-top"><span>LINE Target Reach</span><span>5,289 · 34.1%</span></div>
-              <div class="bar-track"><div class="bar-fill" style="width: 34.1%"></div></div>
-            </div>
-            <div class="bar-item">
-              <div class="bar-top"><span>Website LINE Matched</span><span>3,396 · 21.9%</span></div>
-              <div class="bar-track"><div class="bar-fill amber" style="width: 21.9%"></div></div>
-            </div>
-          </div>
-          <p class="note">
-            ปัจจุบัน LINE Target Reach ครอบคลุมสมาชิกอนุมัติประมาณ <strong>34.1%</strong>
-            และมีสมาชิกที่ match LINE กับเว็บไซต์ได้ประมาณ <strong>21.9%</strong> ของฐานอนุมัติ
-          </p>
-        </article>
+  <div class="card span4">
+    <h3>เพศ</h3>
+    <div class="note">หลัง enrich จากสองแหล่งข้อมูล (รู้เพศ 58.6%)</div>
+    <div class="chartbox" style="height:240px"><canvas id="cGender"></canvas></div>
+  </div>
+  <div class="card span8">
+    <h3>ภาควิชา</h3>
+    <div class="note">ระบุภาควิชาจริงได้เพียง 27% — ว่าง 64% และกลุ่ม CMU EAA อีก 9%</div>
+    <div class="chartbox" style="height:240px"><canvas id="cDept"></canvas></div>
+  </div>
 
-        <article class="card">
-          <h3>LINE OA Trend 7 วัน</h3>
-          <svg class="trend" viewBox="0 0 620 290" role="img" aria-label="LINE OA 7 day trend">
-            <rect width="620" height="290" rx="14" fill="rgba(8,12,22,.35)"></rect>
-            <g stroke="rgba(216,224,238,.14)" stroke-width="1">
-              <line x1="60" y1="40" x2="60" y2="235"></line>
-              <line x1="60" y1="235" x2="580" y2="235"></line>
-              <line x1="60" y1="95" x2="580" y2="95"></line>
-              <line x1="60" y1="155" x2="580" y2="155"></line>
-            </g>
-            <polyline
-              points="60,54 146,54 233,54 320,54 407,54 494,54 580,54"
-              fill="none"
-              stroke="#16a34a"
-              stroke-width="4"
-              stroke-linecap="round"
-            ></polyline>
-            <polyline
-              points="60,84 146,84 233,85 320,85 407,85 494,85 580,85"
-              fill="none"
-              stroke="#1e6bff"
-              stroke-width="4"
-              stroke-linecap="round"
-            ></polyline>
-            <polyline
-              points="60,221 146,221 233,220 320,220 407,220 494,220 580,220"
-              fill="none"
-              stroke="#ef4444"
-              stroke-width="4"
-              stroke-linecap="round"
-            ></polyline>
-            <g fill="#a7b0c0" font-size="12">
-              <text x="45" y="58" text-anchor="end">5,865</text>
-              <text x="45" y="88" text-anchor="end">5,289</text>
-              <text x="45" y="224" text-anchor="end">360</text>
-              <text x="60" y="260" text-anchor="middle">Jun 4</text>
-              <text x="233" y="260" text-anchor="middle">Jun 6</text>
-              <text x="407" y="260" text-anchor="middle">Jun 8</text>
-              <text x="580" y="260" text-anchor="middle">Jun 10</text>
-            </g>
-          </svg>
-          <div class="legend">
-            <span><i></i>Friends Added 5,865</span>
-            <span class="cyan"><i></i>Target Reach 5,289</span>
-            <span class="red"><i></i>Blocked 360</span>
-          </div>
-        </article>
-      </div>
-    </section>
+  <div class="card span6">
+    <h3>จังหวัด Top 15</h3>
+    <div class="note">enrich จากรหัสไปรษณีย์ — coverage เพิ่มจาก 16.2% เป็น 73.6%</div>
+    <div class="chartbox" style="height:300px"><canvas id="cProv"></canvas></div>
+    <div class="insight"><b>เชียงใหม่ 3,708 คน</b> แซงกรุงเทพฯ (1,922) เมื่อใช้ข้อมูลรหัสไปรษณีย์ — ภาพเดิมที่ว่ากทม.อันดับ 1 มาจากข้อมูลจังหวัดที่กรอกเองเพียง 16%</div>
+  </div>
+  <div class="card span6">
+    <h3>การสมัครสมาชิกรายปี (พ.ศ.)</h3>
+    <div class="note">เฉพาะผู้สมัครผ่านระบบ 5,338 คน (34.5%) — ที่เหลือเป็นข้อมูล import</div>
+    <div class="chartbox" style="height:300px"><canvas id="cReg"></canvas></div>
+    <div class="insight">พีค <b>2560 (2,178)</b> และ <b>2565 (1,368)</b> | จุดต่ำสุด <span class="b">2567 เหลือ 31 คน</span> | ปี <b>2569 ฟื้นเป็น 60 คนในครึ่งปี</b> จากระบบลงทะเบียนกิจกรรม</div>
+  </div>
 
-    <section class="section" aria-labelledby="quality-title">
-      <div class="section-head">
-        <div>
-          <h2 id="quality-title">Data Quality Checks</h2>
-          <p>ตัวเลขที่ควรแก้หรือเฝ้าดูก่อนรายงานเป็นทางการ</p>
-        </div>
-      </div>
-      <div class="grid three-col">
-        <article class="card quality-card">
-          <strong class="accent-amber">1,014</strong>
-          <span>Duplicate rows ในรายงาน Website LINE OA ต้อง deduplicate ก่อนใช้เลข matched users</span>
-        </article>
-        <article class="card quality-card">
-          <strong class="accent-blue">17</strong>
-          <span>Student IDs อยู่ในเว็บไซต์แต่ไม่มีใน CSV snapshot ต้องตรวจและ refresh CSV</span>
-        </article>
-        <article class="card quality-card">
-          <strong class="accent-purple">5</strong>
-          <span>Student IDs อยู่ใน CSV แต่ไม่พบในเว็บไซต์ ควรตรวจว่าเป็น legacy หรือ missing record</span>
-        </article>
-        <article class="card quality-card">
-          <strong class="accent-green">15,592</strong>
-          <span>Website valid unique student IDs หลังตัดแถวรหัสว่าง 1 แถว</span>
-        </article>
-        <article class="card quality-card">
-          <strong style="color: var(--red)">6.1%</strong>
-          <span>LINE OA blocked rate: 360 blocked จาก friends added 5,865</span>
-        </article>
-        <article class="card quality-card">
-          <strong class="accent-amber">23.0%</strong>
-          <span>Duplicate rate ของ Website LINE report: 1,014 จาก 4,410 nonblank rows</span>
-        </article>
-      </div>
-    </section>
+  <div class="card span6">
+    <h3>กลุ่มอาชีพ Top 10</h3>
+    <div class="note">จากผู้ที่ระบุอาชีพ ~19% ของฐาน</div>
+    <div class="chartbox" style="height:300px"><canvas id="cOcc"></canvas></div>
+  </div>
+  <div class="card span6">
+    <h3>สถานะช่องทางสื่อสาร</h3>
+    <div class="note">ความสามารถในการเข้าถึงสมาชิก 15,476 คน</div>
+    <table>
+      <tr><th>ช่องทาง</th><th class="num">เข้าถึงได้</th><th class="num">% ของสมาชิก</th></tr>
+      <tr><td>อีเมล (ตรวจ format แล้ว)</td><td class="num">10,182</td><td class="num">65.8%</td></tr>
+      <tr><td>เบอร์โทรศัพท์ (normalize แล้ว)</td><td class="num">7,765</td><td class="num">50.2%</td></tr>
+      <tr><td>LINE OA (ทาร์เก็ตรีช)</td><td class="num">5,289</td><td class="num">34.2%</td></tr>
+      <tr><td>ที่อยู่ไปรษณีย์ (มีรหัสไปรษณีย์)</td><td class="num">11,163</td><td class="num">72.1%</td></tr>
+    </table>
+    <div class="insight">LINE OA <span class="w">broadcast หยุดตั้งแต่ ต.ค. 2567</span> เพราะโควต้าแผนฟรี (300 ข้อความ/เดือน) ไม่พอส่งทั้งฐาน 5,289 คน — อีเมลคือช่องทางที่เข้าถึงได้กว้างที่สุดตอนนี้</div>
+  </div>
 
-    <section class="section" aria-labelledby="phone-title">
-      <div class="section-head">
-        <div>
-          <h2 id="phone-title">Phone Audit Summary</h2>
-          <p>สรุปคุณภาพเบอร์โทรจาก Website LINE Dedup และ CSV Alumni Snapshot โดยไม่แสดงข้อมูลส่วนบุคคลบนเว็บ</p>
-        </div>
-      </div>
-      <div class="grid kpi-grid">
-        <article class="card kpi">
-          <div class="label">ตรวจทั้งหมด</div>
-          <div class="value">18,977</div>
-          <p>รวมข้อมูลจาก 2 แหล่งที่มีคอลัมน์เบอร์โทร</p>
-        </article>
-        <article class="card kpi">
-          <div class="label">ใช้ได้ตาม Rule</div>
-          <div class="value accent-green">7,852</div>
-          <p>รวมมือถือไทยและเบอร์ขึ้นต้น 0 ที่เข้ารูปแบบ</p>
-        </article>
-        <article class="card kpi">
-          <div class="label">ควรแก้ / ตรวจทาน</div>
-          <div class="value accent-amber">3,027</div>
-          <p>เช่น เบอร์ขาด 0, รูปแบบ +66, ยาว/สั้นผิดปกติ</p>
-        </article>
-        <article class="card kpi">
-          <div class="label">ไม่มีเบอร์</div>
-          <div class="value" style="color: var(--red)">8,025</div>
-          <p>เป็นช่องว่างด้าน data completeness ไม่ใช่ error โดยตรง</p>
-        </article>
-      </div>
-      <div class="table-wrap" style="margin-top: 16px">
-        <table>
-          <thead>
-            <tr>
-              <th>Phone Issue</th>
-              <th>จำนวน</th>
-              <th>ข้อเสนอแนะ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>น่าจะหายเลข 0 หน้าเบอร์มือถือ เช่น 8xxxxxxxx / 9xxxxxxxx</td>
-              <td class="num">2,779</td>
-              <td>เติม 0 หน้าเบอร์แล้วตรวจซ้ำก่อน import กลับระบบ</td>
-            </tr>
-            <tr>
-              <td>รูปแบบ 66xxxxxxxxx ที่ควรแปลงเป็น 0xxxxxxxxx</td>
-              <td class="num">47</td>
-              <td>แปลง country code เป็นรูปแบบไทยมาตรฐาน</td>
-            </tr>
-            <tr>
-              <td>หลายเบอร์ในช่องเดียว</td>
-              <td class="num">83</td>
-              <td>แยกเบอร์หลักและเบอร์สำรอง หรือเลือกเบอร์หลักสำหรับ LINE/CRM</td>
-            </tr>
-            <tr>
-              <td>สั้น/ยาวผิดปกติ หรือไม่ขึ้นต้น 0</td>
-              <td class="num">174</td>
-              <td>ตรวจด้วยคนก่อนแก้ เพราะอาจเป็นเบอร์สำนักงานหรือ extension</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+  <div class="card span12">
+    <h3>สรุปการทำ Data Cleansing (11 มิ.ย. 2569)</h3>
+    <table>
+      <tr><th>รายการ</th><th class="num">ก่อน</th><th class="num">หลัง</th><th>หมายเหตุ</th></tr>
+      <tr><td>จำนวนรายชื่อ</td><td class="num">15,593</td><td class="num">15,476</td><td>ลบ spam/test 11 + รวมคนซ้ำ 106 (สมัคร 2 ครั้งด้วยรหัสพิมพ์ผิด)</td></tr>
+      <tr><td>เบอร์โทรรูปแบบถูกต้อง</td><td class="num">4,635</td><td class="num">7,765</td><td>เติม 0 ที่ Excel ตัด + ลบขีด/วงเล็บ + แปลง +66</td></tr>
+      <tr><td>ระบุจังหวัด</td><td class="num">16.2%</td><td class="num">73.6%</td><td>derive จากรหัสไปรษณีย์ 8,887 ราย</td></tr>
+      <tr><td>ระบุเพศ</td><td class="num">20.2%</td><td class="num">58.6%</td><td>merge จากฐานข้อมูลเดิม + normalize ค่า</td></tr>
+      <tr><td>อีเมล valid</td><td class="num">มีค่าเสียปน</td><td class="num">10,182 (100% valid)</td><td>ตัด format เสีย/ค่า "-" ออก</td></tr>
+    </table>
+  </div>
+</div>
 
-    <section class="section" aria-labelledby="source-title">
-      <div class="section-head">
-        <div>
-          <h2 id="source-title">Source Snapshot</h2>
-          <p>แหล่งข้อมูลที่ใช้ใน dashboard เวอร์ชันนี้</p>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Source</th>
-              <th>Raw / Count</th>
-              <th>Clean / Unique</th>
-              <th>ใช้เป็น</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>LINE OA Manager Friends Insight</td>
-              <td class="num">5,865 friends</td>
-              <td class="num">5,289 target reach</td>
-              <td>ฐาน reachable audience สำหรับ LINE OA</td>
-            </tr>
-            <tr>
-              <td>Website Admin Member Table</td>
-              <td class="num">15,593 rows</td>
-              <td class="num">15,592 valid IDs</td>
-              <td>ฐานสมาชิกเว็บไซต์ปัจจุบัน</td>
-            </tr>
-            <tr>
-              <td>Website Admin LINE OA Report</td>
-              <td class="num">4,410 nonblank rows</td>
-              <td class="num">3,396 unique IDs</td>
-              <td>ฐาน matched LINE-linked alumni records</td>
-            </tr>
-            <tr>
-              <td>Entaneer Alumni CSV Snapshot</td>
-              <td class="num">15,581 rows</td>
-              <td class="num">15,580 unique IDs</td>
-              <td>ไฟล์อ้างอิง/ประวัติ ไม่ใช่ฐานปัจจุบัน</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+<div class="footer">CMUEAA Alumni Dashboard — สร้างจาก CMUEAA_Master_2026-06-11.csv | อัปเดต 11 มิถุนายน 2569</div>
 
-    <section class="section" aria-labelledby="action-title">
-      <div class="section-head">
-        <div>
-          <h2 id="action-title">Recommended Action Plan</h2>
-          <p>สิ่งที่ควรทำต่อเพื่อให้ dashboard และฐานข้อมูลใช้บริหาร PR ได้จริง</p>
-        </div>
-      </div>
-      <div class="actions">
-        <article class="card action">
-          <h3>ปรับชื่อ KPI ในทุกระบบ</h3>
-          <p>ถ้าใช้เลข 5,289 ให้เรียก LINE Target Reach หรือ Reachable LINE Audience แทน Active user</p>
-        </article>
-        <article class="card action">
-          <h3>Deduplicate ก่อนรายงาน</h3>
-          <p>Website LINE report มี duplicate 1,014 rows จึงควรใช้ unique student IDs เท่านั้น</p>
-        </article>
-        <article class="card action">
-          <h3>แก้บัญชี LINE OA ให้ตรงกัน</h3>
-          <p>หลังบ้านควรแสดง @entaneer ให้ตรงกับบัญชี LINE OA Manager ที่ใช้งานจริง</p>
-        </article>
-        <article class="card action">
-          <h3>Review ID Gap</h3>
-          <p>ตรวจ 17 web-only IDs และ 5 CSV-only IDs ก่อน refresh CSV snapshot รอบถัดไป</p>
-        </article>
-        <article class="card action">
-          <h3>Clean Phone Numbers</h3>
-          <p>แก้กลุ่มเบอร์ที่ขาดเลข 0 หน้าเบอร์ 2,779 รายการ และแปลงรูปแบบ 66 ให้เป็นมาตรฐานไทย</p>
-        </article>
-        <article class="card action">
-          <h3>เพิ่มตัวกรอง Dashboard</h3>
-          <p>รอบถัดไปควรเพิ่ม filter ตามรุ่น ภาควิชา ภูมิภาค สถานะสมาชิก และ LINE-linked status</p>
-        </article>
-      </div>
-    </section>
+<script>
+const D = {"gear": {"1": 59, "2": 49, "3": 81, "4": 89, "5": 90, "6": 83, "7": 111, "8": 104, "9": 104, "10": 95, "11": 178, "12": 175, "13": 237, "14": 218, "15": 267, "16": 258, "17": 247, "18": 237, "19": 273, "20": 372, "21": 428, "22": 362, "23": 394, "24": 446, "25": 454, "26": 441, "27": 426, "28": 396, "29": 424, "30": 338, "31": 403, "32": 385, "33": 391, "34": 435, "35": 478, "36": 602, "37": 604, "38": 627, "39": 662, "40": 571, "41": 528, "42": 663, "43": 162, "44": 138, "45": 241, "46": 230, "47": 357, "48": 82, "49": 72, "50": 305, "51": 63, "52": 14, "53": 14, "54": 6, "55": 5, "56": 1, "57": 1}, "dept": {"ไม่ระบุภาควิชา": 9957, "กลุ่ม CMU EAA (ไม่ระบุภาคจริง)": 1338, "วิศวกรรมโยธา": 1125, "วิศวกรรมเครื่องกล": 977, "วิศวกรรมอุตสาหการ": 775, "วิศวกรรมไฟฟ้า": 620, "วิศวกรรมสิ่งแวดล้อม": 267, "วิศวกรรมคอมพิวเตอร์": 231, "วิศวกรรมเหมืองแร่และปิโตรเลียม": 127, "วิศวกรรมเครื่องจักรกลเกษตร": 59}, "gender": {"ชาย": 7667, "ไม่ระบุ": 6411, "หญิง": 1398}, "prov": {"เชียงใหม่": 3708, "กรุงเทพมหานคร": 1922, "ลำปาง": 860, "ลำพูน": 549, "เชียงราย": 495, "นนทบุรี": 381, "พะเยา": 255, "แพร่": 253, "นครสวรรค์": 251, "ปทุมธานี": 234, "พิษณุโลก": 204, "น่าน": 195, "ชลบุรี": 195, "สุโขทัย": 149, "อุตรดิตถ์": 128}, "reg": {"2559": 228, "2560": 2178, "2561": 125, "2562": 126, "2563": 295, "2564": 92, "2565": 1368, "2566": 675, "2567": 31, "2568": 159, "2569": 60}, "occ": {"วิศวกร": 841, "พนักงานบริษัทเอกชนอื่นๆ": 625, "ข้าราชการ/พนักงานรัฐวิสาหกิจ": 483, "ธุรกิจส่วนตัว": 374, "นักเรียน/นักศึกษา": 349, "อาชีพอิสระ": 79, "อื่นๆ": 74, "เกษียณ": 44, "ผู้ประกอบการ เจ้าของธุรกิจ ธุรกิจส่วนตัว": 34, "พนักงานบริษัทในธุรกิจการเงิน": 21}};
+Chart.defaults.color = '#8b98a5';
+Chart.defaults.font.family = 'Sarabun';
+Chart.defaults.borderColor = '#2d3741';
+const GRID = {color:'#222a32'};
 
-    <p class="footer">
-      CMUEAA Alumni Dashboard · Updated 10 June 2026 · Static GitHub Pages dashboard · No personal phone/email records are displayed.
-    </p>
-  </main>
+new Chart(document.getElementById('cGear'), {type:'bar', data:{
+  labels:Object.keys(D.gear), datasets:[{data:Object.values(D.gear),
+  backgroundColor:Object.keys(D.gear).map(k=>{const g=+k; return (g>=43&&g<=49)?'#f87171':(g>=36&&g<=42)?'#34d399':'#3b82f6'}), borderRadius:3}]},
+  options:{plugins:{legend:{display:false}}, maintainAspectRatio:false,
+  scales:{x:{grid:{display:false},ticks:{autoSkip:true,maxRotation:0}},y:{grid:GRID}}}});
+
+new Chart(document.getElementById('cGender'), {type:'doughnut', data:{
+  labels:Object.keys(D.gender), datasets:[{data:Object.values(D.gender),
+  backgroundColor:['#3b82f6','#475569','#ec4899'], borderColor:'#1a2026', borderWidth:3}]},
+  options:{maintainAspectRatio:false, plugins:{legend:{position:'bottom'}}, cutout:'62%'}});
+
+new Chart(document.getElementById('cDept'), {type:'bar', data:{
+  labels:Object.keys(D.dept), datasets:[{data:Object.values(D.dept),
+  backgroundColor:Object.keys(D.dept).map(k=>k.includes('ไม่ระบุ')?'#475569':k.includes('CMU EAA')?'#fbbf24':'#34d399'), borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}}, maintainAspectRatio:false,
+  scales:{x:{grid:GRID},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+
+new Chart(document.getElementById('cProv'), {type:'bar', data:{
+  labels:Object.keys(D.prov), datasets:[{data:Object.values(D.prov), backgroundColor:'#60a5fa', borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}}, maintainAspectRatio:false,
+  scales:{x:{grid:GRID},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+
+new Chart(document.getElementById('cReg'), {type:'bar', data:{
+  labels:Object.keys(D.reg), datasets:[{data:Object.values(D.reg),
+  backgroundColor:Object.keys(D.reg).map(y=>y==='2567'?'#f87171':y==='2569'?'#34d399':'#3b82f6'), borderRadius:3}]},
+  options:{plugins:{legend:{display:false}}, maintainAspectRatio:false,
+  scales:{x:{grid:{display:false}},y:{grid:GRID}}}});
+
+new Chart(document.getElementById('cOcc'), {type:'bar', data:{
+  labels:Object.keys(D.occ), datasets:[{data:Object.values(D.occ), backgroundColor:'#a78bfa', borderRadius:3}]},
+  options:{indexAxis:'y', plugins:{legend:{display:false}}, maintainAspectRatio:false,
+  scales:{x:{grid:GRID},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+</script>
 </body>
 </html>
