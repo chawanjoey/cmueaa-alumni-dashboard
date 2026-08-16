@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ยินยอมเชื่อมต่อ LINE — CMUEAA</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#8a1818;--maroon-d:#5e1010;--maroon-l:#f8ecec;--ink:#1f2430;--muted:#6b7280;
+  --line:#e3e6ec;--bg:#f4f5f8;--line-green:#06c755;--ok:#0a8a4a;--bad:#c0362c}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Sarabun',sans-serif}
+body{background:var(--bg);color:var(--ink);line-height:1.55;padding:24px 14px;min-height:100vh}
+.wrap{max-width:520px;margin:0 auto}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+nav a{border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--line);color:var(--maroon);background:#fff}
+nav a.on{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 2px 14px rgba(30,20,40,.06)}
+.hero{background:linear-gradient(135deg,var(--maroon),var(--maroon-d));color:#fff;padding:26px 26px 24px;text-align:center}
+.badges{display:flex;gap:10px;justify-content:center;align-items:center;margin-bottom:14px}
+.b-line{width:52px;height:52px;border-radius:13px;background:var(--line-green);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+.b-cm{width:56px;height:56px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.45),0 8px 20px -8px rgba(0,0,0,.5)}
+.b-cm img{width:84%;height:84%;object-fit:contain}
+.b-link{color:rgba(255,255,255,.55);display:flex;align-items:center}
+.b-link .cm-i{width:22px;height:22px}
+.hero h1{font-size:21px;font-weight:700}
+.hero p{font-size:13.5px;opacity:.9;margin-top:6px}
+.body{padding:22px 26px 26px}
+.sec-h{font-size:13px;font-weight:700;color:var(--maroon-d);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+.data{list-style:none;display:grid;gap:9px;margin-bottom:20px}
+.data li{display:flex;gap:11px;align-items:center;background:var(--maroon-l);border-radius:11px;padding:11px 13px;font-size:14px}
+.data .ic{width:30px;height:30px;border-radius:8px;background:#fff;border:1px solid #e4d3d3;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.data b{display:block;font-size:14px}.data span{color:var(--muted);font-size:12px}
+.purpose{background:#f7f8fa;border-radius:11px;padding:13px 15px;font-size:13px;color:#4b5563;margin-bottom:18px}
+.purpose b{color:var(--ink)}
+.pdpa-note{font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.pdpa-note a{color:var(--maroon);font-weight:600}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;cursor:pointer;padding:11px 13px;border:1px solid var(--line);border-radius:11px;margin-bottom:10px;transition:.15s}
+.chk:has(input:checked){border-color:var(--maroon);background:var(--maroon-l)}
+.chk input{margin-top:2px;width:18px;height:18px;flex-shrink:0;accent-color:var(--maroon)}
+.chk.req.bad{border-color:var(--bad);background:#fbeae8}
+.chk .req-mark{color:var(--bad)}
+.btn{width:100%;border:0;border-radius:12px;padding:15px;font-size:15.5px;font-weight:700;font-family:inherit;cursor:pointer;margin-top:8px}
+.btn-line{background:var(--line-green);color:#fff}
+.btn-line:disabled{background:#c8d0d6;cursor:not-allowed}
+.alt{display:block;text-align:center;margin-top:14px;font-size:13.5px;color:var(--maroon);font-weight:600;text-decoration:none}
+.foot{text-align:center;font-size:11.5px;color:var(--muted);margin-top:16px}
+.done-msg{display:none;background:#e7f6ee;border:1px solid #b8e6c8;color:var(--ok);border-radius:11px;padding:12px;font-size:13.5px;text-align:center;margin-top:12px;font-weight:600}
+.done-msg.show{display:block}
+</style>
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/assets/brand.css">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a href="/">ฟอร์มสมัคร</a>
+    <a href="/consent" class="on">เชื่อมต่อ LINE</a>
+    <a href="/profile">โปรไฟล์เต็ม</a>
+    <a href="/workflow">Workflow</a>
+    <a href="/privacy">นโยบายฯ</a>
+  </nav>
+
+  <div class="card">
+    <div class="hero">
+      <div class="badges"><div class="b-line">LINE</div><div class="b-link"><svg class="cm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div><div class="b-cm"><img src="/logo.png" alt="ตราสมาคม CMUEAA"></div></div>
+      <h1>เชื่อมต่อ LINE เพื่อความสะดวก</h1>
+      <p>ระบบจะดึงข้อมูลพื้นฐานจากบัญชี LINE ของท่าน เพื่อลดขั้นตอนการกรอก</p>
+    </div>
+    <div class="body">
+      <div class="sec-h">ข้อมูลที่จะได้รับจากบัญชี LINE</div>
+      <ul class="data">
+        <li><span class="ic"><svg class="cm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><div><b>ชื่อโปรไฟล์</b><span>ใช้กรอกชื่อให้อัตโนมัติ (แก้ไขได้)</span></div></li>
+        <li><span class="ic"><svg class="cm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span><div><b>อีเมล</b><span>ที่ผูกกับบัญชี LINE (ถ้ามีและอนุญาต)</span></div></li>
+        <li><span class="ic"><svg class="cm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><div><b>LINE User ID</b><span>ผูกบัญชีเพื่อรับข่าวสาร/ยืนยันตัวตน</span></div></li>
+      </ul>
+
+      <div class="purpose">
+        <b>วัตถุประสงค์</b> เพื่อยืนยันสถานะสมาชิก ลดการกรอกข้อมูลซ้ำ และใช้ส่งข่าวสาร กิจกรรม รวมถึงสิทธิประโยชน์ของสมาชิก
+      </div>
+
+      <div class="pdpa-note">
+        สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มช. (CMUEAA) จะเก็บและใช้ข้อมูลตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+        ท่านมีสิทธิเข้าถึง แก้ไข ลบ และถอนความยินยอมได้ ดู<a href="/privacy" target="_blank">นโยบายความเป็นส่วนตัว</a>
+        หรือติดต่อ <a href="mailto:dpo@cmueaa.org">dpo@cmueaa.org</a>
+      </div>
+
+      <label class="chk req" id="c1box">
+        <input type="checkbox" id="c1">
+        <span>ข้าพเจ้ายินยอมให้ CMUEAA เก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคล (รวมถึงชื่อและอีเมลจาก LINE) ตามวัตถุประสงค์และนโยบายข้างต้น <span class="req-mark">*</span></span>
+      </label>
+      <label class="chk">
+        <input type="checkbox" id="c2">
+        <span>ยินยอมรับข่าวสาร กิจกรรม และสิทธิประโยชน์ ผ่าน Email / LINE (ไม่บังคับ)</span>
+      </label>
+
+      <button class="btn btn-line" id="go" disabled>ยินยอม &amp; เชื่อมต่อ LINE</button>
+      <div class="done-msg" id="done">เชื่อมต่อเรียบร้อย กำลังไปยังหน้ากรอกข้อมูล</div>
+      <a href="/" class="alt">ข้ามขั้นตอนนี้ และกรอกข้อมูลเอง</a>
+      <div class="foot">ท่านสามารถถอนความยินยอมได้ภายหลังที่หน้าโปรไฟล์ หรือติดต่อเจ้าหน้าที่คุ้มครองข้อมูลส่วนบุคคลของสมาคม</div>
+    </div>
+  </div>
+</div>
+<script>
+  var c1=document.getElementById('c1'),go=document.getElementById('go'),box=document.getElementById('c1box');
+  c1.addEventListener('change',function(){go.disabled=!c1.checked;if(c1.checked)box.classList.remove('bad');});
+  go.addEventListener('click',function(){
+    go.textContent='กำลังเชื่อมต่อ';go.disabled=true;
+    document.getElementById('done').classList.add('show');
+    setTimeout(function(){location.href='/profile?linked=1';},1400);
+  });
+</script>
+<div class="cm-sign"><img src="/logo.png" alt=""><span>สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</span></div>
+</body>
+</html>

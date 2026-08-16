@@ -1,0 +1,14 @@
+# ข้อมูลสมาชิก — มีข้อมูลส่วนบุคคล ห้ามขึ้น repo สาธารณะ
+*.csv
+*.xlsx
+*.xls
+backend_*/
+*.pptx
+*.docx
+
+# ระบบ
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+node_modules/

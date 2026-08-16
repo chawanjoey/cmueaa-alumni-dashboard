@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สมัครสมาชิก | สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มช.</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --maroon:#8a1818;--maroon-d:#5e1010;--maroon-l:#f8ecec;
+  --ink:#1f2430;--muted:#6b7280;--line:#e3e6ec;--bg:#f4f5f8;
+  --ok:#0a8a4a;--okbg:#e7f6ee;--warn:#b8860b;--warnbg:#fdf6e3;--bad:#c0362c;--badbg:#fbeae8;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Sarabun',sans-serif}
+body{background:var(--bg);color:var(--ink);line-height:1.55;padding:24px 14px}
+.wrap{max-width:680px;margin:0 auto}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,40,.04)}
+.hero{background:linear-gradient(135deg,var(--maroon),var(--maroon-d));color:#fff;padding:26px 28px}
+.hero .logo{width:98px;height:98px;border-radius:50%;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:var(--maroon);margin-bottom:15px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.45),0 12px 28px -10px rgba(0,0,0,.55)}
+.hero .logo img{width:100%;height:100%;object-fit:contain;padding:8px}
+.hero h1{font-size:22px;font-weight:700}
+.hero p{font-size:13.5px;opacity:.85;margin-top:3px}
+.badge{display:inline-block;margin-top:10px;background:rgba(255,255,255,.15);border-radius:20px;padding:3px 12px;font-size:12px}
+.body{padding:22px 28px 28px}
+.sec{margin-top:22px}
+.sec:first-child{margin-top:6px}
+.sec-h{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;color:var(--maroon-d);padding-bottom:9px;border-bottom:2px solid var(--maroon-l);margin-bottom:16px}
+.sec-h .n{width:22px;height:22px;border-radius:50%;background:var(--maroon);color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-h small{font-weight:400;color:var(--muted);font-size:12px;margin-left:auto}
+.fg{margin-bottom:15px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+label{display:block;font-size:13.5px;font-weight:500;margin-bottom:5px}
+label .req{color:var(--bad)}
+label .hint{font-weight:400;color:var(--muted);font-size:12px}
+input[type=text],input[type=tel],input[type=email],input[type=date],select{
+  width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:14.5px;background:#fff;transition:border .15s}
+input:focus,select:focus{outline:none;border-color:var(--maroon)}
+input.bad,select.bad{border-color:var(--bad);background:var(--badbg)}
+input.ok{border-color:var(--ok)}
+input[readonly]{background:#f7f8fa;color:var(--muted)}
+.msg{font-size:12.5px;margin-top:5px;display:none}
+.msg.show{display:block}
+.msg.e{color:var(--bad)}.msg.w{color:var(--warn)}.msg.s{color:var(--ok)}
+.radios{display:flex;gap:8px;flex-wrap:wrap}
+.radios label{flex:1;min-width:90px;margin:0;border:1.5px solid var(--line);border-radius:9px;padding:9px;text-align:center;cursor:pointer;font-weight:400;transition:.15s}
+.radios input{display:none}
+.radios input:checked+span{font-weight:600}
+.radios label:has(input:checked){border-color:var(--maroon);background:var(--maroon-l);color:var(--maroon-d)}
+.derived{background:var(--maroon-l);border:1px solid #d9c9ec;border-radius:10px;padding:12px 14px;margin-top:10px;display:none}
+.derived.show{display:block}
+.derived .t{font-size:13.5px}.derived b{color:var(--maroon-d)}
+.derived .confirm{display:flex;gap:16px;margin-top:8px;font-size:13px}
+.derived .confirm label{margin:0;font-weight:400;display:flex;align-items:center;gap:5px;cursor:pointer}
+.line-first{display:flex;align-items:center;gap:13px;background:#e8f8ee;border:1.5px solid #06c755;border-radius:12px;padding:15px 16px;margin-bottom:10px}
+.line-first .lf-ic{width:44px;height:44px;border-radius:11px;background:#06c755;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.line-first .lf-tx{flex:1;font-size:12.5px;color:#3d5245;line-height:1.55}
+.line-first .lf-tx b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+.line-first .lf-btn{background:#06c755;color:#fff;border-radius:9px;padding:10px 17px;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.lf-alt{text-align:center;font-size:12.5px;color:var(--muted);margin-bottom:16px}
+@media(max-width:520px){.line-first{flex-wrap:wrap}.line-first .lf-btn{width:100%;text-align:center}}
+.line-cta{display:flex;align-items:center;gap:12px;background:#e8f8ee;border:1px solid #b8e6c8;border-radius:10px;padding:12px 14px;margin-top:4px}
+.line-cta .ic{width:34px;height:34px;border-radius:8px;background:#06c755;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.line-cta .tx{font-size:13px;flex:1}.line-cta .tx b{display:block}
+.line-cta button,.line-cta a{background:#06c755;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;white-space:nowrap}
+.next-step{margin-top:22px;background:var(--maroon-l);border:1px solid #e8d3d3;border-radius:12px;padding:15px 17px}
+.next-step .ns-h{font-size:14px;font-weight:700;color:var(--maroon-d);margin-bottom:5px}
+.next-step p{font-size:12.5px;color:#4b5563;line-height:1.6}
+.next-step .ns-link{display:inline-block;margin-top:9px;font-size:13px;font-weight:600;color:#fff;background:var(--maroon);border-radius:20px;padding:6px 14px;text-decoration:none}
+.note{font-size:12px;color:var(--muted);background:#f7f8fa;border-radius:8px;padding:8px 11px;margin-top:-6px;margin-bottom:12px}
+.actions{margin-top:24px;display:flex;gap:12px}
+.btn{flex:1;padding:14px;border:0;border-radius:11px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-primary{background:var(--maroon);color:#fff}
+.btn-primary:hover{background:var(--maroon-d)}
+.btn-ghost{flex:0 0 auto;background:#fff;border:1.5px solid var(--line);color:var(--muted)}
+.footer-note{text-align:center;font-size:12px;color:var(--muted);margin-top:16px}
+.pdpa{margin-top:22px;border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fbfbfc}
+.pdpa h4{font-size:13.5px;color:var(--maroon-d);margin-bottom:7px}
+.pdpa p{font-size:12.5px;color:#4b5563;line-height:1.65}
+.pdpa a{color:var(--maroon);font-weight:600}
+.pdpa .chk{display:flex;gap:9px;align-items:flex-start;margin-top:12px;font-size:13px;cursor:pointer}
+.pdpa .chk input{margin-top:3px;width:17px;height:17px;flex-shrink:0;accent-color:var(--maroon)}
+.pdpa .chk.req-bad{color:var(--bad)}
+.dup-banner{background:var(--warnbg);border:1px solid #ecd9a0;border-radius:10px;padding:13px 15px;margin-bottom:16px;display:none}
+.dup-banner.show{display:block}
+.dup-banner .t{font-size:13.5px;color:#7a5b00}
+.dup-banner .acts{margin-top:9px;display:flex;gap:10px}
+.dup-banner button{border:0;border-radius:7px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer}
+.dup-banner .up{background:var(--warn);color:#fff}
+.dup-banner .cancel{background:#fff;border:1px solid var(--line);color:var(--muted)}
+.summary{background:#0f1419;color:#cfe3d2;border-radius:12px;padding:16px;font-size:12.5px;white-space:pre-wrap;font-family:ui-monospace,monospace;margin-top:16px;display:none;line-height:1.5}
+.summary.show{display:block}
+</style>
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/assets/brand.css">
+</head>
+<body>
+<div class="wrap">
+<nav style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+  <a href="/" style="background:#8a1818;color:#fff;border:1px solid #8a1818;border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">ฟอร์มสมัคร</a>
+  <a href="/consent" style="background:transparent;color:#8a1818;border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">เชื่อมต่อ LINE</a>
+  <a href="/profile" style="background:transparent;color:#8a1818;border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">โปรไฟล์เต็ม</a>
+  <a href="/workflow" style="background:transparent;color:#8a1818;border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">Workflow</a>
+  <a href="/privacy" style="background:transparent;color:#8a1818;border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">นโยบายฯ</a>
+</nav>
+<div class="card">
+  <div class="hero">
+    <div class="logo"><img src="/logo.png" alt="ตราสมาคม CMUEAA" onerror="this.parentNode.textContent='วศ'"></div>
+    <h1>สมัครสมาชิกสมาคมนักศึกษาเก่าฯ</h1>
+    <p>คณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่ (CMUEAA)</p>
+    <span class="badge">ใช้เวลาประมาณ 1 นาที</span>
+  </div>
+  <div class="body">
+    <div class="line-first">
+      <div class="lf-ic">LINE</div>
+      <div class="lf-tx">
+        <b>สมัครผ่าน LINE ได้ทันที</b>
+        <span>ระบบจะดึงชื่อและอีเมลจากบัญชี LINE ให้อัตโนมัติ ท่านกรอกเองเพียงรหัสนักศึกษา และใช้บัญชีนี้ยืนยันตัวตนเวลาเข้าร่วมงานได้เลย</span>
+      </div>
+      <a href="/consent" class="lf-btn">เชื่อมต่อ LINE</a>
+    </div>
+    <div class="lf-alt">หรือกรอกข้อมูลเองในแบบฟอร์มด้านล่าง</div>
+
+    <div class="dup-banner" id="dupBanner">
+      <div class="t"><svg class="cm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.29 3.86-8.02 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3l-8.02-14a2 2 0 0 0-3.42 0"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> <b>รหัสนักศึกษานี้เคยสมัครแล้ว</b> <span id="dupDate"></span> — ต้องการอัปเดตข้อมูลเดิมหรือไม่?</div>
+      <div class="acts">
+        <button class="up" onclick="alert('ระบบจะดึงข้อมูลเดิมของท่านขึ้นมาให้แก้ไข')">อัปเดตข้อมูลเดิม</button>
+        <button class="cancel" onclick="document.getElementById('dupBanner').classList.remove('show')">ยกเลิก</button>
+      </div>
+    </div>
+
+    <form id="form" novalidate>
+    <!-- ════ ส่วนที่ 1 ════ -->
+    <div class="sec">
+      <div class="sec-h"><span class="n">1</span>ยืนยันตัวตน <small>จำเป็น</small></div>
+
+      <div class="fg">
+        <label>รหัสนักศึกษา <span class="req">*</span> <span class="hint">— 7–9 หลัก</span></label>
+        <input type="text" id="studentId" inputmode="numeric" maxlength="9" placeholder="เช่น 590610389">
+        <div class="msg e" id="sidMsg"></div>
+        <div class="derived" id="gearBox">
+          <div class="t"><svg class="cm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> เข้าศึกษาปี พ.ศ. <b id="entryYear">—</b> · รุ่นเกียร์ <b id="gearVal">—</b></div>
+          <div class="confirm">
+            <label><input type="radio" name="gearConfirm" value="ok" checked onchange="toggleGearEdit(false)"> ถูกต้อง</label>
+            <label><input type="radio" name="gearConfirm" value="edit" onchange="toggleGearEdit(true)"> ไม่ถูก (แก้เกียร์เอง)</label>
+            <input type="text" id="gearManual" inputmode="numeric" maxlength="2" style="width:70px;display:none" placeholder="เกียร์">
+          </div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>ภาควิชา <span class="req">*</span></label>
+        <select id="department">
+          <option value="">— เลือกภาควิชา —</option>
+          <option>วิศวกรรมโยธา</option>
+          <option>วิศวกรรมไฟฟ้า</option>
+          <option>วิศวกรรมเครื่องกล</option>
+          <option>วิศวกรรมอุตสาหการ</option>
+          <option>วิศวกรรมสิ่งแวดล้อม</option>
+          <option>วิศวกรรมคอมพิวเตอร์</option>
+          <option>วิศวกรรมเหมืองแร่และปิโตรเลียม</option>
+          <option>วิศวกรรมเครื่องจักรกลเกษตร</option>
+          <option>วิศวกรรมระบบสารสนเทศและเครือข่าย</option>
+          <option>ยังไม่แยกภาค (เรียนรวมปี 1)</option>
+        </select>
+        <div class="msg e" id="deptMsg"></div>
+      </div>
+
+      <div class="row">
+        <div class="fg">
+          <label>คำนำหน้า <span class="req">*</span></label>
+          <select id="titleTh">
+            <option value="">—</option><option>นาย</option><option>นาง</option><option>นางสาว</option>
+          </select>
+          <div class="msg e" id="titleMsg"></div>
+        </div>
+        <div class="fg">
+          <label>ยศ/ตำแหน่งวิชาการ <span class="hint">(ถ้ามี)</span></label>
+          <select id="rank">
+            <option value="">ไม่มี</option><option>ดร.</option><option>ผศ.</option><option>ผศ.ดร.</option>
+            <option>รศ.</option><option>รศ.ดร.</option><option>ศ.</option><option>ศ.ดร.</option><option>ยศทหาร/ตำรวจ</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="fg">
+          <label>ชื่อ (ไทย) <span class="req">*</span></label>
+          <input type="text" id="firstTh" placeholder="ชื่อจริง">
+          <div class="msg e" id="firstMsg"></div>
+        </div>
+        <div class="fg">
+          <label>นามสกุล (ไทย) <span class="req">*</span></label>
+          <input type="text" id="lastTh" placeholder="นามสกุล">
+          <div class="msg e" id="lastMsg"></div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>เพศ <span class="req">*</span></label>
+        <div class="radios" id="genderGroup">
+          <label><input type="radio" name="gender" value="ชาย"><span>ชาย</span></label>
+          <label><input type="radio" name="gender" value="หญิง"><span>หญิง</span></label>
+          <label><input type="radio" name="gender" value="ไม่ระบุ"><span>ไม่ระบุ</span></label>
+        </div>
+        <div class="msg e" id="genderMsg"></div>
+      </div>
+    </div>
+
+    <!-- ════ ส่วนที่ 2 ════ -->
+    <div class="sec">
+      <div class="sec-h"><span class="n">2</span>ช่องทางติดต่อ <small>อย่างน้อย 1 ช่อง</small></div>
+      <div class="row">
+        <div class="fg">
+          <label>เบอร์มือถือ</label>
+          <input type="tel" id="mobile" inputmode="numeric" maxlength="12" placeholder="08X-XXX-XXXX">
+          <div class="msg e" id="mobileMsg"></div>
+        </div>
+        <div class="fg">
+          <label>อีเมล</label>
+          <input type="email" id="email" placeholder="you@example.com">
+          <div class="msg e" id="emailMsg"></div>
+        </div>
+      </div>
+      <div class="msg e show" id="contactMsg" style="display:none;margin-top:-8px;margin-bottom:10px"><svg class="cm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.29 3.86-8.02 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3l-8.02-14a2 2 0 0 0-3.42 0"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> กรุณากรอกเบอร์มือถือหรืออีเมลอย่างน้อย 1 ช่อง</div>
+      <div class="line-cta">
+        <div class="ic">LINE</div>
+        <div class="tx"><b>เพิ่มเพื่อน LINE OA สมาคมฯ</b>รับข่าวสาร กิจกรรม และสิทธิประโยชน์สมาชิก</div>
+        <a href="https://lin.ee/565Imq1" target="_blank" rel="noopener" id="lineBtn" onclick="this.textContent='เพิ่มเพื่อนแล้ว';this.style.background='#0a8a4a'">เพิ่มเพื่อน</a>
+      </div>
+    </div>
+
+    <!-- ════ ขั้นถัดไป ════ -->
+    <div class="next-step">
+      <div class="ns-h">ข้อมูลเพิ่มเติม</div>
+      <p>ท่านสามารถเพิ่มที่อยู่ ข้อมูลการทำงาน และข้อมูลวิชาชีพได้ที่หน้าโปรไฟล์ หลังสมัครสมาชิกเรียบร้อยแล้ว</p>
+      <a href="/profile" class="ns-link">ไปหน้าโปรไฟล์</a>
+    </div>
+
+    <div class="pdpa">
+      <h4>การคุ้มครองข้อมูลส่วนบุคคล (PDPA)</h4>
+      <p>สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มช. (CMUEAA) เก็บรวบรวมข้อมูลของท่านเพื่อการบริหารสมาชิก สื่อสารข่าวสาร/กิจกรรม และมอบสิทธิประโยชน์สมาชิก โดยเก็บตลอดระยะเวลาการเป็นสมาชิกและตามที่กฎหมายกำหนด ท่านมีสิทธิเข้าถึง แก้ไข ลบ คัดค้าน และถอนความยินยอมได้ ดูรายละเอียดใน <a href="privacy.html" target="_blank">นโยบายความเป็นส่วนตัว</a> หรือติดต่อเจ้าหน้าที่คุ้มครองข้อมูล (DPO) ที่ <a href="mailto:dpo@cmueaa.org">dpo@cmueaa.org</a></p>
+      <label class="chk" id="consentMain"><input type="checkbox" id="consent"><span>ข้าพเจ้าได้อ่านและยอมรับ<a href="privacy.html" target="_blank">นโยบายความเป็นส่วนตัว</a> และยินยอมให้สมาคมฯ เก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลตามวัตถุประสงค์ข้างต้น <span style="color:var(--bad)">*</span></span></label>
+      <label class="chk"><input type="checkbox" id="consentComm"><span>ยินยอมรับข่าวสาร กิจกรรม และสิทธิประโยชน์ผ่าน Email / LINE (ไม่บังคับ)</span></label>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary">สมัครสมาชิก</button>
+    </div>
+    <div class="footer-note">ข้อมูลของท่านได้รับการคุ้มครองตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</div>
+    <div class="summary" id="summary"></div>
+    </form>
+  </div>
+</div>
+</div>
+
+<script>
+// mock: รหัสที่ "เคยสมัครแล้ว" สำหรับ demo เช็คซ้ำ
+const EXISTING={"3606371":"15 ธ.ค. 2565","590610389":"3 มี.ค. 2566"};
+
+const $=id=>document.getElementById(id);
+const ZW=/[​‌‍﻿ ]/g;
+const clean=s=>s.replace(ZW,'').replace(/\s+/g,' ').trim();
+
+// ── derive เกียร์ + เช็คซ้ำ ──
+$('studentId').addEventListener('input',e=>{
+  const v=e.target.value.replace(/\D/g,'');e.target.value=v;
+  const box=$('gearBox'),m=$('sidMsg');
+  if(v.length>=2){
+    const y2=parseInt(v.slice(0,2),10);
+    $('entryYear').textContent=2500+y2;
+    $('gearVal').textContent=y2-12;
+    box.classList.add('show');
+  } else box.classList.remove('show');
+  // ตรวจรูปแบบ
+  if(v.length>0&&v.length<7){m.textContent='รหัสต้อง 7–9 หลัก';m.classList.add('show');e.target.classList.add('bad');}
+  else{m.classList.remove('show');e.target.classList.remove('bad');if(v.length>=7)e.target.classList.add('ok');}
+  // เช็คซ้ำ
+  const dup=$('dupBanner');
+  if(EXISTING[v]){$('dupDate').textContent='(สมัครเมื่อ '+EXISTING[v]+')';dup.classList.add('show');}
+  else dup.classList.remove('show');
+});
+function toggleGearEdit(on){const g=$('gearManual');g.style.display=on?'inline-block':'none';if(!on)g.value='';}
+
+// ── mobile mask + validate ──
+$('mobile').addEventListener('input',e=>{
+  let d=e.target.value.replace(/\D/g,'').slice(0,10);
+  let f=d;if(d.length>6)f=d.slice(0,3)+'-'+d.slice(3,6)+'-'+d.slice(6);
+  else if(d.length>3)f=d.slice(0,3)+'-'+d.slice(3);
+  e.target.value=f;
+  const m=$('mobileMsg');
+  if(d.length===10&&!/^0[689]\d{8}$/.test(d)){m.textContent='เบอร์มือถือต้องขึ้นต้น 06/08/09';m.classList.add('show');e.target.classList.add('bad');}
+  else if(d.length>0&&d.length<10){m.classList.remove('show');e.target.classList.remove('bad');}
+  else{m.classList.remove('show');e.target.classList.remove('bad');if(d.length===10)e.target.classList.add('ok');}
+});
+
+// ── email validate ──
+$('email').addEventListener('blur',e=>{
+  const v=clean(e.target.value).toLowerCase();e.target.value=v;const m=$('emailMsg');
+  if(v&&!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(v)){m.textContent='รูปแบบอีเมลไม่ถูกต้อง';m.classList.add('show');e.target.classList.add('bad');}
+  else{m.classList.remove('show');e.target.classList.remove('bad');if(v)e.target.classList.add('ok');}
+});
+
+// ── submit ──
+$('form').addEventListener('submit',ev=>{
+  ev.preventDefault();let ok=true;
+  const fail=(el,mid,txt)=>{ok=false;el.classList.add('bad');if(mid){$(mid).textContent=txt;$(mid).classList.add('show');}};
+  const pass=(el,mid)=>{el.classList.remove('bad');if(mid)$(mid).classList.remove('show');};
+
+  const sid=$('studentId').value.replace(/\D/g,'');
+  if(sid.length<7){fail($('studentId'),'sidMsg','กรุณากรอกรหัสนักศึกษา 7–9 หลัก');}else pass($('studentId'),'sidMsg');
+  if(!$('department').value){fail($('department'),'deptMsg','กรุณาเลือกภาควิชา');}else pass($('department'),'deptMsg');
+  if(!$('titleTh').value){fail($('titleTh'),'titleMsg','เลือกคำนำหน้า');}else pass($('titleTh'),'titleMsg');
+  if(!clean($('firstTh').value)){fail($('firstTh'),'firstMsg','กรอกชื่อ');}else pass($('firstTh'),'firstMsg');
+  if(!clean($('lastTh').value)){fail($('lastTh'),'lastMsg','กรอกนามสกุล');}else pass($('lastTh'),'lastMsg');
+  const gender=document.querySelector('input[name=gender]:checked');
+  if(!gender){ok=false;$('genderMsg').textContent='เลือกเพศ';$('genderMsg').classList.add('show');}else $('genderMsg').classList.remove('show');
+
+  const mob=$('mobile').value.replace(/\D/g,'');const em=clean($('email').value).toLowerCase();
+  const mobOk=/^0[689]\d{8}$/.test(mob);const emOk=/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(em);
+  if(!mobOk&&!emOk){ok=false;$('contactMsg').style.display='block';}else $('contactMsg').style.display='none';
+  if(mob&&!mobOk){fail($('mobile'),'mobileMsg','เบอร์ไม่ถูกต้อง');}
+
+  // PDPA — ต้องยินยอมก่อนสมัคร
+  if(!$('consent').checked){ok=false;$('consentMain').classList.add('req-bad');$('consentMain').scrollIntoView({behavior:'smooth',block:'center'});}
+  else $('consentMain').classList.remove('req-bad');
+
+  if(!ok){if($('consent').checked)window.scrollTo({top:0,behavior:'smooth'});return;}
+
+  // derive gear (override ถ้าติ๊กแก้)
+  const gMode=document.querySelector('input[name=gearConfirm]:checked').value;
+  const gear=gMode==='edit'&&$('gearManual').value?parseInt($('gearManual').value):parseInt(sid.slice(0,2))-12;
+
+  const out={
+    student_id:sid, gear, department:$('department').value,
+    title_th:$('titleTh').value, academic_rank:$('rank').value||null,
+    first_name_th:clean($('firstTh').value), last_name_th:clean($('lastTh').value),
+    gender:gender.value,
+    mobile:mobOk?mob:null, email:emOk?em:null,
+    consent_pdpa:true, consent_pdpa_at:new Date().toISOString(),
+    consent_marketing:$('consentComm').checked, privacy_policy_version:'2026-06'
+  };
+  const s=$('summary');
+  s.textContent='ตรวจสอบข้อมูลผ่าน — payload ที่จะส่งเข้าระบบ:\n\n'+JSON.stringify(out,null,2);
+  s.classList.add('show');s.scrollIntoView({behavior:'smooth'});
+});
+</script>
+<div class="cm-sign"><img src="/logo.png" alt=""><span>สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</span></div>
+</body>
+</html>

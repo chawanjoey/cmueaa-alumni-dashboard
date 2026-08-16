@@ -1,0 +1,153 @@
+/* ───────────────────────────────────────────────
+   CMUEAA — ชุดรูปแบบงานออกแบบส่วนกลาง
+   สีหลักจากตราสมาคม: เลือดหมู + ม่วงช้าง + ทองเฟือง
+   ─────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --cm-maroon:#8a1818;
+  --cm-maroon-deep:#5e1010;
+  --cm-maroon-ink:#3d0b0b;
+  --cm-plum:#7b2d8e;          /* จากลายช้างในตราสมาคม */
+  --cm-gold:#b8894a;
+  --cm-paper:#f7f4f3;
+  --cm-hair:rgba(138,24,24,.14);
+  --cm-shadow-sm:0 1px 2px rgba(61,11,11,.05), 0 2px 8px rgba(61,11,11,.05);
+  --cm-shadow-md:0 2px 6px rgba(61,11,11,.06), 0 12px 32px -8px rgba(61,11,11,.14);
+  --cm-shadow-hero:0 18px 44px -18px rgba(61,11,11,.55);
+  --cm-display:"Chakra Petch","IBM Plex Sans Thai",sans-serif;
+  --cm-body:"IBM Plex Sans Thai","Chakra Petch",sans-serif;
+}
+
+/* ── ตัวอักษร ─────────────────────────────── */
+body{
+  font-family:var(--cm-body);
+  background-image:
+    radial-gradient(circle at 12% -8%, rgba(138,24,24,.05), transparent 42%),
+    radial-gradient(circle at 92% 4%, rgba(123,45,142,.045), transparent 38%);
+  background-attachment:fixed;
+}
+h1,h2,h3,.hero h1,.sec-h,.eyebrow,.card h3,.btn,.add-btn,nav a,thead th,.pill,.tag,.ns-h,.biz-intro b{
+  font-family:var(--cm-display);
+  letter-spacing:.005em;
+}
+h1,.hero h1{font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+label,input,select,textarea,button,p,li,td,dd,dt,span{font-family:var(--cm-body)}
+.eyebrow{letter-spacing:.16em}
+
+/* ── หัวเรื่องพร้อมตราสมาคม ─────────────────── */
+.hero{position:relative;overflow:hidden}
+.hero::before{                       /* ลายเฟืองจาง ๆ เป็นพื้นหลัง */
+  content:"";position:absolute;right:-104px;top:-108px;width:320px;height:320px;
+  background:url('/logo.png') no-repeat center/contain;
+  opacity:.085;filter:brightness(0) invert(1);pointer-events:none;
+}
+.hero::after{                        /* เส้นแสงบาง ๆ ตัดมุม */
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(112deg,transparent 38%,rgba(255,255,255,.07) 50%,transparent 62%);
+}
+.hero>*{position:relative;z-index:1}
+
+.cm-crest{
+  width:96px;height:96px;border-radius:50%;background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 1px rgba(255,255,255,.5), 0 10px 26px -8px rgba(0,0,0,.5);
+  margin-bottom:15px;overflow:hidden;
+}
+.cm-crest img{width:88%;height:88%;object-fit:contain}
+.cm-crest--sm{width:60px;height:60px;margin:0}
+.cm-crest--tiny{width:40px;height:40px;margin:0;box-shadow:0 0 0 1px var(--cm-hair)}
+
+/* แถบตราสมาคมด้านบนของหน้าเอกสาร */
+.cm-masthead{
+  display:flex;align-items:center;gap:13px;
+  padding:0 0 16px;margin-bottom:20px;border-bottom:1px solid var(--line,var(--cm-hair));
+}
+.cm-masthead .cm-txt{line-height:1.35}
+.cm-masthead .cm-th{font-family:var(--cm-display);font-weight:700;font-size:15px;color:var(--maroon-d,var(--cm-maroon-deep))}
+.cm-masthead .cm-en{font-size:11.5px;color:var(--muted,#7a6f6f);letter-spacing:.07em;text-transform:uppercase}
+
+/* ── การ์ดและกล่อง ─────────────────────────── */
+.card,.entry,.pdpa,.biz-intro,.next-step,.subform{box-shadow:var(--cm-shadow-sm)}
+.card{box-shadow:var(--cm-shadow-md)}
+.entry{transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease}
+.entry:hover{transform:translateY(-1px);box-shadow:var(--cm-shadow-md)}
+
+/* ── ช่องกรอกข้อมูล ────────────────────────── */
+input[type=text],input[type=tel],input[type=email],input[type=date],select,textarea{
+  transition:border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+input:focus,select:focus,textarea:focus{
+  box-shadow:0 0 0 3px rgba(138,24,24,.11);
+}
+input:hover:not(:focus):not([readonly]),select:hover:not(:focus),textarea:hover:not(:focus){
+  border-color:#d6c3c3;
+}
+
+/* ── ปุ่ม ─────────────────────────────────── */
+.btn,.add-btn,.ns-link,.lf-btn{transition:transform .14s ease, box-shadow .16s ease, background-color .16s ease}
+.btn:hover,.ns-link:hover,.lf-btn:hover{transform:translateY(-1px);box-shadow:var(--cm-shadow-md)}
+.btn:active,.add-btn:active,.ns-link:active,.lf-btn:active{transform:translateY(0)}
+.btn-primary{
+  background:linear-gradient(160deg,var(--cm-maroon) 0%, var(--cm-maroon-deep) 100%);
+  letter-spacing:.01em;
+}
+
+/* ── เมนูด้านบน ────────────────────────────── */
+nav a{transition:background-color .16s ease, color .16s ease, border-color .16s ease}
+nav a:hover{border-color:var(--cm-maroon);background:rgba(138,24,24,.05)}
+
+/* ── หมายเลขหัวข้อ ─────────────────────────── */
+.sec-h .n{
+  background:linear-gradient(150deg,var(--cm-maroon),var(--cm-maroon-deep));
+  box-shadow:0 2px 6px -2px rgba(94,16,16,.6);
+}
+
+/* ── การปรากฏของเนื้อหาเมื่อเปิดหน้า ────────── */
+@media (prefers-reduced-motion:no-preference){
+  .card,.wrap>.cm-masthead,.sheet,table,.decide{animation:cmRise .5s cubic-bezier(.2,.7,.3,1) both}
+  .cards>.card:nth-child(2){animation-delay:.06s}
+  .cards>.card:nth-child(3){animation-delay:.12s}
+  .cards>.card:nth-child(4){animation-delay:.18s}
+  .cards>.card:nth-child(5){animation-delay:.24s}
+  .cards>.card:nth-child(6){animation-delay:.3s}
+}
+@keyframes cmRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── การเข้าถึงด้วยแป้นพิมพ์ ────────────────── */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--cm-maroon);outline-offset:2px;
+}
+
+/* ── ท้ายหน้า ─────────────────────────────── */
+.cm-sign{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  max-width:860px;margin:24px auto 6px;padding-top:16px;border-top:1px solid var(--line,var(--cm-hair));
+  font-size:11.5px;color:var(--muted,#8a7d7d);letter-spacing:.02em;
+}
+.cm-sign img{width:26px;height:26px;object-fit:contain;opacity:.85}
+
+/* ── ไอคอน ────────────────────────────────── */
+.cm-i{width:1.05em;height:1.05em;flex-shrink:0;vertical-align:-.16em}
+.data .ic .cm-i{width:17px;height:17px;color:var(--cm-maroon)}
+.linked span .cm-i{width:16px;height:16px}
+.dup .t .cm-i,.msg .cm-i,.info .t .cm-i{width:16px;height:16px;vertical-align:-.19em}
+
+/* ── ขนาดพื้นที่กดขั้นต่ำ ─────────────────── */
+nav a{min-height:40px;display:inline-flex;align-items:center;padding:8px 16px}
+input[type=text],input[type=tel],input[type=email],input[type=date],select{min-height:44px}
+textarea{min-height:92px}
+button,summary,label,select,a{touch-action:manipulation;-webkit-tap-highlight-color:rgba(138,24,24,.12)}
+button,select,label.chk,label.tog{cursor:pointer}
+input[type=checkbox],input[type=radio]{width:19px;height:19px;cursor:pointer}
+.btn{min-height:48px}
+
+/* ── สถานะปิดใช้งาน ───────────────────────── */
+button:disabled{opacity:.45;cursor:not-allowed}
+button:disabled:hover{transform:none;box-shadow:none}
+
+@media(max-width:520px){
+  .cm-crest{width:76px;height:76px}
+  .hero::before{width:200px;height:200px;right:-66px;top:-62px;opacity:.06}
+  input,select,textarea{font-size:16px}   /* กัน iOS ซูมอัตโนมัติเมื่อโฟกัส */
+}

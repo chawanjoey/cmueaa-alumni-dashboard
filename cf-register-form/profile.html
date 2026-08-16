@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ข้อมูลโปรไฟล์ &amp; ที่ทำงาน — CMUEAA</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#8a1818;--maroon-d:#5e1010;--maroon-l:#f8ecec;--ink:#1f2430;--muted:#6b7280;
+  --line:#e3e6ec;--bg:#f4f5f8;--ok:#0a8a4a;--okbg:#e7f6ee;--bad:#c0362c;--badbg:#fbeae8}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Sarabun',sans-serif}
+body{background:var(--bg);color:var(--ink);line-height:1.55;padding:24px 14px}
+.wrap{max-width:680px;margin:0 auto}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+nav a{border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--line);color:var(--maroon);background:#fff}
+nav a.on{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,40,.04)}
+.hero{background:linear-gradient(135deg,var(--maroon),var(--maroon-d));color:#fff;padding:22px 26px}
+.hero h1{font-size:21px;font-weight:700}
+.hero p{font-size:13.5px;opacity:.88;margin-top:3px}
+.body{padding:20px 26px 26px}
+.linked{display:none;align-items:center;gap:10px;background:var(--okbg);border:1px solid #b8e6c8;border-radius:11px;padding:11px 14px;font-size:13px;color:var(--ok);margin-bottom:18px}
+.linked.show{display:flex}
+.linked b{font-weight:700}
+.sec{margin-top:22px}
+.sec:first-of-type{margin-top:6px}
+.sec-h{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;color:var(--maroon-d);padding-bottom:9px;border-bottom:2px solid var(--maroon-l);margin-bottom:16px}
+.sec-h .n{width:22px;height:22px;border-radius:50%;background:var(--maroon);color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-h small{font-weight:400;color:var(--muted);font-size:12px;margin-left:auto}
+.fg{margin-bottom:15px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+label{display:block;font-size:13.5px;font-weight:500;margin-bottom:5px}
+label .hint{font-weight:400;color:var(--muted);font-size:12px}
+input,select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:14.5px;background:#fff;transition:border .15s}
+input:focus,select:focus{outline:none;border-color:var(--maroon)}
+input[readonly]{background:#f7f8fa;color:var(--muted)}
+.prefill{border-color:#b8e6c8;background:#f4fbf6}
+.msg{font-size:12.5px;margin-top:5px;color:var(--bad);display:none}
+.msg.show{display:block}
+.radios{display:flex;gap:8px;flex-wrap:wrap}
+.radios label{flex:1;min-width:90px;margin:0;border:1.5px solid var(--line);border-radius:9px;padding:9px;text-align:center;cursor:pointer;font-weight:400}
+.radios input{display:none}
+.radios label:has(input:checked){border-color:var(--maroon);background:var(--maroon-l);color:var(--maroon-d);font-weight:600}
+.note{font-size:12px;color:var(--muted);background:#f7f8fa;border-radius:8px;padding:8px 11px;margin:-6px 0 12px}
+/* privacy toggle ต่อฟิลด์ */
+.priv{display:flex;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;color:var(--muted);cursor:pointer;user-select:none}
+.priv input{width:14px;height:14px;margin:0;accent-color:var(--maroon);flex-shrink:0}
+.priv:has(input:checked){color:var(--maroon);font-weight:600}
+/* multi-entry */
+.entries{display:grid;gap:10px;margin-bottom:12px}
+.entry{border:1px solid var(--line);border-left:3px solid var(--maroon);border-radius:10px;padding:12px 14px;background:#fbfbfc;position:relative}
+.entry .et{font-size:14px;font-weight:600}
+.entry .es{font-size:12.5px;color:var(--muted);margin-top:2px}
+.entry .del{position:absolute;top:10px;right:11px;background:none;border:0;color:var(--bad);font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.entry .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:20px;background:var(--maroon-l);color:var(--maroon);margin-bottom:5px}
+.empty{border:1.5px dashed var(--line);border-radius:10px;padding:14px;text-align:center;font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.add-btn{background:#fff;border:1.5px solid var(--maroon);color:var(--maroon);border-radius:9px;padding:9px 15px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.add-btn:hover{background:var(--maroon-l)}
+.subform{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff;margin-bottom:12px;display:none}
+.subform.show{display:block}
+textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:14.5px;font-family:inherit;background:#fff;resize:vertical;min-height:88px}
+textarea:focus{outline:none;border-color:var(--maroon)}
+.cnt{font-size:11.5px;color:var(--muted);text-align:right;margin-top:3px}
+/* ธุรกิจของสมาชิก */
+.biz-intro{background:var(--maroon-l);border:1px solid #e8d3d3;border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.biz-intro b{font-size:14px;color:var(--maroon-d)}
+.biz-intro p{font-size:12.5px;color:#4b5563;line-height:1.6;margin:4px 0 8px}
+.biz-intro ul{margin:0;padding-left:18px;font-size:12.5px;color:#4b5563;display:grid;gap:3px}
+.chk-biz{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;cursor:pointer;padding:12px 14px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:14px;transition:.15s}
+.chk-biz:has(input:checked){border-color:var(--maroon);background:#fdf9f9}
+.chk-biz input{margin-top:2px;width:18px;height:18px;flex-shrink:0;accent-color:var(--maroon)}
+.perks{display:grid;gap:7px;margin-top:4px}
+.perks label{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;font-weight:400;margin:0;cursor:pointer;line-height:1.5}
+.perks input{width:16px;height:16px;margin-top:1px;flex-shrink:0;accent-color:var(--maroon)}
+.biz-note{font-size:12px;color:var(--muted);background:#f7f8fa;border-radius:9px;padding:10px 13px;margin-top:12px;line-height:1.6}
+.opt{display:none}
+.opt.show{display:block}
+.btn{width:100%;padding:14px;border:0;border-radius:11px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;background:var(--maroon);color:#fff;margin-top:22px}
+.btn:hover{background:var(--maroon-d)}
+.summary{background:#0f1419;color:#cfe3d2;border-radius:12px;padding:16px;font-size:12.5px;white-space:pre-wrap;font-family:ui-monospace,monospace;margin-top:16px;display:none;line-height:1.5}
+.summary.show{display:block}
+.foot{text-align:center;font-size:12px;color:var(--muted);margin-top:16px}
+.analysis{margin-top:26px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.analysis summary{cursor:pointer;padding:13px 16px;font-size:13.5px;font-weight:600;color:var(--maroon-d);background:#fbfbfc;list-style:none}
+.analysis summary::-webkit-details-marker{display:none}
+.analysis summary::before{content:"▸ ";color:var(--maroon)}
+.analysis[open] summary::before{content:"▾ "}
+.analysis .in{padding:4px 16px 16px}
+.analysis table{width:100%;border-collapse:collapse;font-size:12.5px}
+.analysis td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.analysis td:first-child{color:var(--muted)} .analysis td:last-child{font-weight:600}
+</style>
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/assets/brand.css">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a href="/">ฟอร์มสมัคร</a>
+    <a href="/consent">เชื่อมต่อ LINE</a>
+    <a href="/profile" class="on">โปรไฟล์เต็ม</a>
+    <a href="/workflow">Workflow</a>
+    <a href="/privacy">นโยบายฯ</a>
+  </nav>
+
+  <div class="card">
+    <div class="hero">
+      <div class="cm-crest"><img src="/logo.png" alt="ตราสมาคม CMUEAA"></div>
+      <h1>ข้อมูลโปรไฟล์ &amp; ที่ทำงาน</h1>
+      <p>อัปเดตข้อมูลของท่านให้เป็นปัจจุบัน — กรอกเฉพาะส่วนที่ต้องการ</p>
+    </div>
+    <div class="body">
+      <div class="linked" id="linked"><span><svg class="cm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></span><div>เชื่อมต่อบัญชี LINE เรียบร้อย ระบบได้เติมชื่อและอีเมลให้แล้ว ท่านสามารถแก้ไขได้</div></div>
+
+      <form id="form" novalidate>
+        <!-- 1 ข้อมูลส่วนตัว -->
+        <div class="sec">
+          <div class="sec-h"><span class="n">1</span>ข้อมูลส่วนตัว</div>
+          <div class="fg">
+            <label>รหัสนักศึกษา <span class="hint">— ระบบ derive รุ่นเกียร์อัตโนมัติ</span></label>
+            <input type="text" id="sid" inputmode="numeric" maxlength="9" placeholder="เช่น 590610389">
+            <div class="msg" id="sidMsg"></div>
+          </div>
+          <div class="row">
+            <div class="fg"><label>คำนำหน้า</label>
+              <select id="title"><option value="">—</option><option>นาย</option><option>นาง</option><option>นางสาว</option></select></div>
+            <div class="fg"><label>ยศ/ตำแหน่งวิชาการ <span class="hint">(ถ้ามี)</span></label>
+              <select id="rank"><option value="">ไม่มี</option><option>ดร.</option><option>ผศ.</option><option>ผศ.ดร.</option><option>รศ.</option><option>รศ.ดร.</option><option>ศ.</option><option>ศ.ดร.</option><option>ยศทหาร/ตำรวจ</option></select></div>
+          </div>
+          <div class="row">
+            <div class="fg"><label>ชื่อ (ไทย)</label><input type="text" id="fn" placeholder="ชื่อจริง"></div>
+            <div class="fg"><label>นามสกุล (ไทย)</label><input type="text" id="ln" placeholder="นามสกุล"></div>
+          </div>
+          <div class="row">
+            <div class="fg"><label>ชื่อเล่น</label><input type="text" id="nick"></div>
+            <div class="fg"><label>วันเกิด</label><input type="date" id="dob"><div class="msg" id="dobMsg"></div></div>
+          </div>
+          <div class="fg"><label>เพศ</label>
+            <div class="radios" id="g"><label><input type="radio" name="g" value="ชาย"><span>ชาย</span></label><label><input type="radio" name="g" value="หญิง"><span>หญิง</span></label><label><input type="radio" name="g" value="ไม่ระบุ"><span>ไม่ระบุ</span></label></div>
+          </div>
+        </div>
+
+        <!-- 2 ติดต่อ + ที่อยู่ -->
+        <div class="sec">
+          <div class="sec-h"><span class="n">2</span>ข้อมูลติดต่อและที่อยู่ <small>เลือกซ่อนข้อมูลที่ไม่ต้องการเปิดเผยได้</small></div>
+          <div class="row">
+            <div class="fg"><label>เบอร์มือถือ</label><input type="tel" id="mobile" inputmode="numeric" maxlength="12" placeholder="08X-XXX-XXXX"><div class="msg" id="mobMsg"></div>
+              <label class="priv"><input type="checkbox" id="hide_mobile"> ซ่อนเบอร์จากสมาชิกอื่น</label></div>
+            <div class="fg"><label>อีเมล</label><input type="email" id="email" placeholder="you@example.com"><div class="msg" id="emMsg"></div>
+              <label class="priv"><input type="checkbox" id="hide_email"> ซ่อนอีเมลจากสมาชิกอื่น</label></div>
+          </div>
+          <div class="row">
+            <div class="fg"><label>LINE ID <span class="hint">(ถ้ามี)</span></label><input type="text" id="lineid" placeholder="line id">
+              <label class="priv"><input type="checkbox" id="hide_lineid"> ซ่อน LINE ID</label></div>
+            <div class="fg"><label>LinkedIn <span class="hint">(ถ้ามี)</span></label><input type="text" id="linkedin" placeholder="linkedin.com/in/...">
+              <label class="priv"><input type="checkbox" id="hide_linkedin"> ซ่อน LinkedIn</label></div>
+          </div>
+          <div class="note">เมื่อกรอกรหัสไปรษณีย์ ระบบจะเติมจังหวัดให้อัตโนมัติ</div>
+          <div class="row">
+            <div class="fg"><label>รหัสไปรษณีย์</label><input type="text" id="post" inputmode="numeric" maxlength="5" placeholder="50200"></div>
+            <div class="fg"><label>จังหวัด <span class="hint">(อัตโนมัติ)</span></label><input type="text" id="prov" readonly placeholder="—"></div>
+          </div>
+          <div class="fg"><label>บ้านเลขที่ / หมู่ / ซอย / ถนน / ตำบล / อำเภอ</label><input type="text" id="addr" placeholder="123 ถ.ห้วยแก้ว ต.สุเทพ อ.เมือง">
+            <label class="priv"><input type="checkbox" id="hide_addr"> ซ่อนที่อยู่จากสมาชิกอื่น</label></div>
+          <div class="fg"><label>แนะนำตัวเอง <span class="hint">(ไม่บังคับ แสดงในโปรไฟล์สมาชิก)</span></label>
+            <textarea id="bio" maxlength="500" placeholder="เช่น ทำงานด้านพลังงานทดแทน ยินดีแลกเปลี่ยนความรู้กับรุ่นพี่รุ่นน้อง"></textarea>
+            <div class="cnt"><span id="bioCnt">0</span>/500</div></div>
+        </div>
+
+        <!-- 3 การทำงาน -->
+        <div class="sec">
+          <div class="sec-h"><span class="n">3</span>การทำงาน <small>เพิ่มได้หลายแห่ง</small></div>
+          <div class="fg"><label>สถานะการทำงาน</label>
+            <select id="ws" onchange="toggleWork()"><option value="">— เลือก —</option><option>ทำงานแล้ว</option><option>กำลังศึกษาต่อ</option><option>ยังไม่ได้ทำงาน</option><option>เกษียณ</option></select>
+          </div>
+          <div class="opt" id="work">
+            <div class="entries" id="jobList"></div>
+            <div class="empty" id="jobEmpty">ยังไม่มีข้อมูลที่ทำงาน — กด "เพิ่มที่ทำงาน" ด้านล่าง</div>
+
+            <div class="subform" id="jobForm">
+              <div class="row">
+                <div class="fg"><label>ประเภทองค์กร</label>
+                  <select id="org" onchange="toggleGov()"><option value="">— เลือก —</option><option>ราชการ/รัฐวิสาหกิจ</option><option>เอกชน</option><option>ธุรกิจส่วนตัว</option><option>องค์กรไม่แสวงกำไร</option><option>อื่นๆ</option></select></div>
+                <div class="fg"><label>สาขาอุตสาหกรรม</label>
+                  <select id="ind"><option value="">— เลือก —</option><option>อสังหาริมทรัพย์และก่อสร้าง</option><option>สินค้าอุตสาหกรรม</option><option>เทคโนโลยี/ไอที</option><option>บริการ</option><option>พลังงาน/ทรัพยากร</option><option>สินค้าอุปโภคบริโภค</option><option>เกษตรและอาหาร</option><option>การเงิน</option><option>การศึกษา</option><option>สุขภาพ</option><option>ราชการ/รัฐวิสาหกิจ</option><option>อื่นๆ</option></select></div>
+              </div>
+              <div class="fg"><label>ชื่อหน่วยงาน / บริษัท</label><input type="text" id="orgname" placeholder="เช่น การไฟฟ้าฝ่ายผลิตฯ / บริษัท ... จำกัด"></div>
+              <div class="fg"><label>ตำแหน่ง</label><input type="text" id="pos" placeholder="เช่น วิศวกรอาวุโส"></div>
+              <div class="fg opt" id="gov"><label>สังกัดกระทรวง / หน่วยงาน <span class="hint">(เฉพาะราชการ/รัฐวิสาหกิจ)</span></label><input type="text" id="ministry" placeholder="เช่น กระทรวงพลังงาน"></div>
+              <div class="fg"><label>ที่อยู่ที่ทำงาน <span class="hint">(ไม่บังคับ)</span></label><input type="text" id="workaddr" placeholder="ที่อยู่ที่ทำงาน"></div>
+              <label class="priv" style="margin-bottom:10px"><input type="checkbox" id="jobCurrent" checked> เป็นที่ทำงานปัจจุบัน</label>
+              <div style="display:flex;gap:8px">
+                <button type="button" class="add-btn" onclick="saveJob()">บันทึกที่ทำงาน</button>
+                <button type="button" class="add-btn" style="border-color:var(--line);color:var(--muted)" onclick="cancelJob()">ยกเลิก</button>
+              </div>
+            </div>
+            <button type="button" class="add-btn" id="jobAddBtn" onclick="openJob()">+ เพิ่มที่ทำงาน</button>
+          </div>
+        </div>
+
+        <!-- 4 เพิ่มเติม -->
+        <div class="sec">
+          <div class="sec-h"><span class="n">4</span>ข้อมูลวิชาชีพ <small>เพิ่มได้หลายใบ</small></div>
+          <div class="fg"><label>สถานะใบประกอบวิชาชีพวิศวกรรม (กว.)</label>
+            <select id="pe" onchange="togglePe()"><option value="">—</option><option>มี</option><option>ไม่มี</option><option>กำลังดำเนินการ</option></select></div>
+          <div class="opt" id="peWrap">
+            <div class="entries" id="peList"></div>
+            <div class="empty" id="peEmpty">ยังไม่มีเลขที่ใบ กว. — กด "เพิ่มใบ กว." ด้านล่าง</div>
+            <div class="subform" id="peForm">
+              <div class="row">
+                <div class="fg"><label>ระดับใบอนุญาต</label>
+                  <select id="peLevel"><option value="">— เลือก —</option><option>ภาคีวิศวกร</option><option>สามัญวิศวกร</option><option>วุฒิวิศวกร</option><option>ภาคีวิศวกรพิเศษ</option></select></div>
+                <div class="fg"><label>สาขา</label>
+                  <select id="peField"><option value="">— เลือก —</option><option>โยธา</option><option>ไฟฟ้า</option><option>เครื่องกล</option><option>อุตสาหการ</option><option>เหมืองแร่</option><option>สิ่งแวดล้อม</option><option>เคมี</option></select></div>
+              </div>
+              <div class="fg"><label>เลขที่ใบอนุญาต</label><input type="text" id="peNo" placeholder="เช่น ภย.12345">
+                <label class="priv"><input type="checkbox" id="hide_pe"> ซ่อนเลขที่ใบอนุญาตจากสมาชิกอื่น</label></div>
+              <div style="display:flex;gap:8px">
+                <button type="button" class="add-btn" onclick="savePe()">บันทึกใบ กว.</button>
+                <button type="button" class="add-btn" style="border-color:var(--line);color:var(--muted)" onclick="cancelPe()">ยกเลิก</button>
+              </div>
+            </div>
+            <button type="button" class="add-btn" id="peAddBtn" onclick="openPe()">+ เพิ่มใบ กว.</button>
+          </div>
+        </div>
+
+        <!-- 5 ธุรกิจของสมาชิก -->
+        <div class="sec">
+          <div class="sec-h"><span class="n">5</span>ธุรกิจของสมาชิก <small>ไม่บังคับ</small></div>
+
+          <div class="biz-intro">
+            <b>ทำเนียบธุรกิจศิษย์เก่า</b>
+            <p>สมาคมกำลังรวบรวมรายชื่อกิจการของศิษย์เก่า เพื่อจัดทำทำเนียบธุรกิจสมาชิก และประชาสัมพันธ์ให้ศิษย์เก่าทั่วประเทศได้รู้จักและไปใช้บริการ</p>
+            <ul>
+              <li>ประชาสัมพันธ์กิจการของท่านผ่านช่องทางของสมาคม</li>
+              <li>เข้าถึงกลุ่มลูกค้าที่เป็นศิษย์เก่าและครอบครัว</li>
+              <li>เชื่อมโยงเครือข่ายธุรกิจระหว่างรุ่น</li>
+            </ul>
+          </div>
+
+          <label class="chk-biz" id="bizOptBox">
+            <input type="checkbox" id="bizOpt" onchange="toggleBiz()">
+            <span><b>ข้าพเจ้ามีกิจการของตนเอง และประสงค์เข้าร่วมทำเนียบธุรกิจศิษย์เก่า</b><br>
+            พร้อมพิจารณามอบสิทธิพิเศษให้สมาชิกสมาคมตามความเหมาะสมของกิจการ</span>
+          </label>
+
+          <div class="opt" id="bizWrap">
+            <div class="entries" id="bizList"></div>
+            <div class="empty" id="bizEmpty">ยังไม่มีข้อมูลกิจการ กด "เพิ่มกิจการ" ด้านล่าง</div>
+
+            <div class="subform" id="bizForm">
+              <div class="fg"><label>ชื่อกิจการ</label><input type="text" id="bizName" placeholder="เช่น ร้านกาแฟบ้านสวน"></div>
+              <div class="row">
+                <div class="fg"><label>ประเภทกิจการ</label>
+                  <select id="bizType"><option value="">— เลือก —</option>
+                    <option>ร้านอาหาร คาเฟ่ เครื่องดื่ม</option>
+                    <option>ค้าปลีก ร้านค้า</option>
+                    <option>ที่พัก โรงแรม รีสอร์ท</option>
+                    <option>สุขภาพ ความงาม ฟิตเนส</option>
+                    <option>การศึกษา อบรม</option>
+                    <option>ก่อสร้าง รับเหมา งานวิศวกรรม</option>
+                    <option>เทคโนโลยี ซอฟต์แวร์ ไอที</option>
+                    <option>ขนส่ง โลจิสติกส์</option>
+                    <option>ที่ปรึกษา บริการวิชาชีพ</option>
+                    <option>โรงงาน การผลิต</option>
+                    <option>อสังหาริมทรัพย์</option>
+                    <option>เกษตร อาหารแปรรูป</option>
+                    <option>ท่องเที่ยว นำเที่ยว</option>
+                    <option>อื่นๆ</option>
+                  </select></div>
+                <div class="fg"><label>จังหวัดที่ตั้ง / พื้นที่ให้บริการ</label><input type="text" id="bizArea" placeholder="เช่น เชียงใหม่ หรือ ทั่วประเทศ"></div>
+              </div>
+              <div class="fg"><label>ช่องทางติดต่อกิจการ <span class="hint">(เว็บไซต์ เพจ หรือเบอร์ร้าน)</span></label><input type="text" id="bizContact" placeholder="เช่น facebook.com/... หรือ 053-xxxxxx"></div>
+
+              <div class="fg"><label>สิทธิพิเศษที่ยินดีมอบให้สมาชิก <span class="hint">(เลือกได้มากกว่า 1 ข้อ)</span></label>
+                <div class="perks">
+                  <label><input type="checkbox" class="perk" value="ส่วนลดสินค้าหรือบริการ"> ส่วนลดสินค้าหรือบริการ</label>
+                  <label><input type="checkbox" class="perk" value="ของแถมหรือของสมนาคุณ"> ของแถมหรือของสมนาคุณ</label>
+                  <label><input type="checkbox" class="perk" value="สิทธิพิเศษช่วงเทศกาลและกิจกรรมสมาคม"> สิทธิพิเศษช่วงเทศกาลและกิจกรรมสมาคม</label>
+                  <label><input type="checkbox" class="perk" value="บริการพิเศษสำหรับสมาชิก เช่น ให้คำปรึกษาหรือประเมินราคาเบื้องต้น"> บริการพิเศษสำหรับสมาชิก เช่น ให้คำปรึกษาหรือประเมินราคา</label>
+                  <label><input type="checkbox" class="perk" value="สนับสนุนของรางวัลหรือกิจกรรมของสมาคม"> สนับสนุนของรางวัลหรือกิจกรรมของสมาคม</label>
+                  <label><input type="checkbox" class="perk" value="ยังไม่กำหนด ขอหารือกับสมาคมภายหลัง"> ยังไม่กำหนด ขอหารือกับสมาคมภายหลัง</label>
+                </div>
+              </div>
+
+              <div class="fg"><label>รายละเอียดเพิ่มเติม <span class="hint">(ไม่บังคับ)</span></label>
+                <textarea id="bizNote" maxlength="300" placeholder="เช่น เงื่อนไขที่ต้องการเสนอ ช่วงเวลาที่สะดวก หรือข้อมูลกิจการที่อยากให้สมาคมทราบ"></textarea></div>
+
+              <div style="display:flex;gap:8px">
+                <button type="button" class="add-btn" onclick="saveBiz()">บันทึกกิจการ</button>
+                <button type="button" class="add-btn" style="border-color:var(--line);color:var(--muted)" onclick="cancelBiz()">ยกเลิก</button>
+              </div>
+            </div>
+            <button type="button" class="add-btn" id="bizAddBtn" onclick="openBiz()">+ เพิ่มกิจการ</button>
+
+            <div class="biz-note">เจ้าหน้าที่สมาคมจะติดต่อกลับเพื่อหารือรายละเอียดสิทธิพิเศษที่เหมาะสมกับกิจการของท่าน ก่อนนำข้อมูลขึ้นเผยแพร่</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn">บันทึกข้อมูล</button>
+        <div class="foot">ข้อมูลของท่านได้รับการคุ้มครองตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</div>
+        <div class="summary" id="summary"></div>
+      </form>
+
+      <details class="analysis" open>
+        <summary>หลักการออกแบบฟอร์มนี้</summary>
+        <div class="in"><table>
+          <tr><td colspan="2" style="color:var(--maroon);font-weight:700;border-bottom:2px solid var(--maroon-l)">ให้สมาชิกควบคุมข้อมูลตัวเอง</td></tr>
+          <tr><td>เลือกซ่อนรายฟิลด์</td><td>เบอร์ / อีเมล / LINE / LinkedIn / ที่อยู่ — เจ้าของข้อมูลกำหนดเองว่าจะแสดงใน directory หรือไม่</td></tr>
+          <tr><td>ใบ กว. ซ่อนได้รายใบ</td><td>แสดงว่ามีใบอนุญาต โดยไม่ต้องเปิดเผยเลขที่</td></tr>
+          <tr><td colspan="2" style="color:var(--maroon);font-weight:700;border-bottom:2px solid var(--maroon-l)">รองรับข้อมูลจริงของสมาชิก</td></tr>
+          <tr><td>ที่ทำงานหลายแห่ง</td><td>สมาชิกจำนวนมากทำงานประจำ + ธุรกิจส่วนตัว หรือเป็นที่ปรึกษาหลายที่</td></tr>
+          <tr><td>ใบ กว. หลายใบ</td><td>ระดับ (ภาคี/สามัญ/วุฒิ) + สาขา — หนึ่งคนถือได้หลายใบ</td></tr>
+          <tr><td>แนะนำตัวเอง</td><td>รองรับการหาเพื่อนร่วมสายงาน / เชื่อมโยงระหว่างรุ่น</td></tr>
+          <tr><td colspan="2" style="color:var(--maroon);font-weight:700;border-bottom:2px solid var(--maroon-l)">ลดภาระการกรอกและกันข้อมูลผิดพลาด</td></tr>
+          <tr><td>ที่อยู่ชุดเดียว</td><td>กรอกรหัสไปรษณีย์ → เติมจังหวัดให้ ไม่ต้องกรอกซ้ำหลายจุด</td></tr>
+          <tr><td>ยุบฟิลด์งาน 10 → 4</td><td>ตัดช่องที่ถามเรื่องเดียวกันซ้ำออก</td></tr>
+          <tr><td>ภาควิชาเป็นตัวเลือก</td><td>ป้องกันการพิมพ์อิสระที่ทำให้จัดกลุ่มข้อมูลไม่ได้</td></tr>
+          <tr><td colspan="2" style="color:var(--maroon);font-weight:700;border-bottom:2px solid var(--maroon-l)">เก็บเท่าที่จำเป็น (PDPA)</td></tr>
+          <tr><td>ขอความยินยอมก่อนเก็บ</td><td>ตั้งแต่ขั้นสมัคร พร้อมแจ้งวัตถุประสงค์</td></tr>
+          <tr><td>ไม่เก็บเลขบัตรประชาชน</td><td>เป็นข้อมูลอ่อนไหวตาม ม.26 และไม่จำเป็นต่อการเป็นสมาชิก</td></tr>
+        </table></div>
+      </details>
+
+      <details class="analysis">
+        <summary>การปรับโครงสร้างฟิลด์จากฟอร์มเดิม</summary>
+        <div class="in"><table>
+          <tr><td style="color:var(--muted)">ฟอร์มเดิม</td><td style="color:var(--muted)">ฟอร์มนี้</td></tr>
+          <tr><td>องค์กรสังกัด + ชื่อบริษัท + สถานที่ทำงาน</td><td>ชื่อหน่วยงาน / บริษัท (ช่องเดียว)</td></tr>
+          <tr><td>ตำแหน่ง (มี 2 ช่อง)</td><td>ตำแหน่ง (ช่องเดียว)</td></tr>
+          <tr><td>ประเภทธุรกิจ + ประเภทสถานที่ทำงาน</td><td>สาขาอุตสาหกรรม</td></tr>
+          <tr><td>สังกัดกระทรวง + หน่วยงาน</td><td>แสดงเฉพาะเมื่อเลือกราชการ/รัฐวิสาหกิจ</td></tr>
+          <tr><td>ที่อยู่บริษัท · รายละเอียดธุรกิจ (แทบไม่มีผู้กรอก)</td><td>ไม่บังคับ</td></tr>
+          <tr><td>ที่อยู่ติดต่อแยกช่อง + ที่อยู่ช่องเดียว</td><td>ที่อยู่ชุดเดียว เริ่มจากรหัสไปรษณีย์</td></tr>
+          <tr><td><b>กลุ่มข้อมูลการทำงาน 10 ช่อง</b></td><td><b>4 ช่อง (+ ช่องที่แสดงตามเงื่อนไข)</b></td></tr>
+        </table></div>
+      </details>
+    </div>
+  </div>
+</div>
+<script>
+const PC={"10":"กรุงเทพมหานคร","11":"นนทบุรี","12":"ปทุมธานี","13":"พระนครศรีอยุธยา","14":"อ่างทอง","15":"ลพบุรี","16":"สิงห์บุรี","17":"ชัยนาท","18":"สระบุรี","20":"ชลบุรี","21":"ระยอง","22":"จันทบุรี","23":"ตราด","24":"ฉะเชิงเทรา","25":"ปราจีนบุรี","26":"นครนายก","27":"สระแก้ว","30":"นครราชสีมา","31":"บุรีรัมย์","32":"สุรินทร์","33":"ศรีสะเกษ","34":"อุบลราชธานี","35":"ยโสธร","36":"ชัยภูมิ","37":"อำนาจเจริญ","38":"บึงกาฬ","39":"หนองบัวลำภู","40":"ขอนแก่น","41":"อุดรธานี","42":"เลย","43":"หนองคาย","44":"มหาสารคาม","45":"ร้อยเอ็ด","46":"กาฬสินธุ์","47":"สกลนคร","48":"นครพนม","49":"มุกดาหาร","50":"เชียงใหม่","51":"ลำพูน","52":"ลำปาง","53":"อุตรดิตถ์","54":"แพร่","55":"น่าน","56":"พะเยา","57":"เชียงราย","58":"แม่ฮ่องสอน","60":"นครสวรรค์","61":"อุทัยธานี","62":"กำแพงเพชร","63":"ตาก","64":"สุโขทัย","65":"พิษณุโลก","66":"พิจิตร","67":"เพชรบูรณ์","70":"ราชบุรี","71":"กาญจนบุรี","72":"สุพรรณบุรี","73":"นครปฐม","74":"สมุทรสาคร","75":"สมุทรสงคราม","76":"เพชรบุรี","77":"ประจวบคีรีขันธ์","80":"นครศรีธรรมราช","81":"กระบี่","82":"พังงา","83":"ภูเก็ต","84":"สุราษฎร์ธานี","85":"ระนอง","86":"ชุมพร","90":"สงขลา","91":"สตูล","92":"ตรัง","93":"พัทลุง","94":"ปัตตานี","95":"ยะลา","96":"นราธิวาส"};
+const $=id=>document.getElementById(id);
+const clean=s=>s.replace(/[​‌‍﻿ ]/g,'').replace(/\s+/g,' ').trim();
+
+// prefill จาก LINE (จำลอง) เมื่อ ?linked=1
+if(new URLSearchParams(location.search).get('linked')){
+  $('linked').classList.add('show');
+  $('fn').value='(ชื่อจาก LINE)';$('fn').classList.add('prefill');
+  $('email').value='member@example.com';$('email').classList.add('prefill');
+}
+
+$('sid').addEventListener('input',e=>{
+  const v=e.target.value.replace(/\D/g,'');e.target.value=v;const m=$('sidMsg');
+  if(v.length>=2){const g=parseInt(v.slice(0,2))-12;m.style.color='var(--muted)';m.textContent='เข้าศึกษาปี 25'+v.slice(0,2)+' · รุ่นเกียร์ '+g;m.classList.add('show');}
+  else m.classList.remove('show');
+});
+$('mobile').addEventListener('input',e=>{
+  let d=e.target.value.replace(/\D/g,'').slice(0,10),f=d;
+  if(d.length>6)f=d.slice(0,3)+'-'+d.slice(3,6)+'-'+d.slice(6);else if(d.length>3)f=d.slice(0,3)+'-'+d.slice(3);
+  e.target.value=f;const m=$('mobMsg');
+  if(d.length===10&&!/^0[689]\d{8}$/.test(d)){m.textContent='เบอร์มือถือขึ้นต้น 06/08/09';m.classList.add('show');}else m.classList.remove('show');
+});
+$('email').addEventListener('blur',e=>{const v=clean(e.target.value).toLowerCase();e.target.value=v;const m=$('emMsg');
+  if(v&&!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(v)){m.textContent='รูปแบบอีเมลไม่ถูกต้อง';m.classList.add('show');}else m.classList.remove('show');});
+$('post').addEventListener('input',e=>{const v=e.target.value.replace(/\D/g,'').slice(0,5);e.target.value=v;$('prov').value=v.length===5?(PC[v.slice(0,2)]||''):'';});
+$('dob').addEventListener('change',e=>{const m=$('dobMsg');if(!e.target.value){m.classList.remove('show');return;}
+  const age=(Date.now()-new Date(e.target.value))/3.156e10;if(age<18||age>90){m.textContent='อายุควร 18–90 ปี (ตรวจปีเกิด)';m.classList.add('show');}else m.classList.remove('show');});
+function toggleWork(){$('work').classList.toggle('show',$('ws').value==='ทำงานแล้ว');}
+function toggleGov(){$('gov').classList.toggle('show',$('org').value==='ราชการ/รัฐวิสาหกิจ');}
+function togglePe(){$('peWrap').classList.toggle('show',$('pe').value==='มี');}
+
+// bio counter
+$('bio').addEventListener('input',e=>{$('bioCnt').textContent=e.target.value.length;});
+
+// ── multi-entry: ที่ทำงาน ──
+const jobs=[];
+function openJob(){$('jobForm').classList.add('show');$('jobAddBtn').style.display='none';}
+function cancelJob(){$('jobForm').classList.remove('show');$('jobAddBtn').style.display='';clearJob();}
+function clearJob(){['org','ind','orgname','pos','ministry','workaddr'].forEach(id=>$(id).value='');$('jobCurrent').checked=true;$('gov').classList.remove('show');}
+function saveJob(){
+  const name=clean($('orgname').value);
+  if(!name){alert('กรุณากรอกชื่อหน่วยงาน/บริษัท');return;}
+  jobs.push({org_type:$('org').value||null,industry:$('ind').value||null,org_name:name,
+    position:clean($('pos').value)||null,ministry_dept:clean($('ministry').value)||null,
+    work_address:clean($('workaddr').value)||null,is_current:$('jobCurrent').checked});
+  renderJobs();cancelJob();
+}
+function delJob(i){jobs.splice(i,1);renderJobs();}
+function renderJobs(){
+  $('jobEmpty').style.display=jobs.length?'none':'block';
+  $('jobList').innerHTML=jobs.map((j,i)=>
+    `<div class="entry">${j.is_current?'<span class="badge">ที่ทำงานปัจจุบัน</span>':''}
+      <button type="button" class="del" onclick="delJob(${i})">ลบ</button>
+      <div class="et">${j.org_name}</div>
+      <div class="es">${[j.position,j.org_type,j.industry].filter(Boolean).join(' · ')||'—'}</div>
+    </div>`).join('');
+}
+
+// ── multi-entry: ใบ กว. ──
+const licenses=[];
+function openPe(){$('peForm').classList.add('show');$('peAddBtn').style.display='none';}
+function cancelPe(){$('peForm').classList.remove('show');$('peAddBtn').style.display='';['peLevel','peField','peNo'].forEach(id=>$(id).value='');}
+function savePe(){
+  const no=clean($('peNo').value);
+  if(!no){alert('กรุณากรอกเลขที่ใบอนุญาต');return;}
+  licenses.push({level:$('peLevel').value||null,field:$('peField').value||null,license_no:no,hidden:$('hide_pe').checked});
+  renderPe();cancelPe();
+}
+function delPe(i){licenses.splice(i,1);renderPe();}
+function renderPe(){
+  $('peEmpty').style.display=licenses.length?'none':'block';
+  $('peList').innerHTML=licenses.map((l,i)=>
+    `<div class="entry">${l.hidden?'<span class="badge">ซ่อนจากสมาชิกอื่น</span>':''}
+      <button type="button" class="del" onclick="delPe(${i})">ลบ</button>
+      <div class="et">${l.license_no}</div>
+      <div class="es">${[l.level,l.field].filter(Boolean).join(' · ')||'—'}</div>
+    </div>`).join('');
+}
+
+// ── ธุรกิจของสมาชิก ──
+const businesses=[];
+function toggleBiz(){$('bizWrap').classList.toggle('show',$('bizOpt').checked);}
+function openBiz(){$('bizForm').classList.add('show');$('bizAddBtn').style.display='none';}
+function cancelBiz(){$('bizForm').classList.remove('show');$('bizAddBtn').style.display='';clearBiz();}
+function clearBiz(){['bizName','bizType','bizArea','bizContact','bizNote'].forEach(id=>$(id).value='');
+  document.querySelectorAll('.perk').forEach(c=>c.checked=false);}
+function saveBiz(){
+  const name=clean($('bizName').value);
+  if(!name){alert('กรุณากรอกชื่อกิจการ');return;}
+  if(!$('bizType').value){alert('กรุณาเลือกประเภทกิจการ');return;}
+  businesses.push({
+    name:name, type:$('bizType').value,
+    area:clean($('bizArea').value)||null, contact:clean($('bizContact').value)||null,
+    perks:[...document.querySelectorAll('.perk:checked')].map(c=>c.value),
+    note:clean($('bizNote').value)||null, status:'รอเจ้าหน้าที่ติดต่อกลับ'
+  });
+  renderBiz();cancelBiz();
+}
+function delBiz(i){businesses.splice(i,1);renderBiz();}
+function renderBiz(){
+  $('bizEmpty').style.display=businesses.length?'none':'block';
+  $('bizList').innerHTML=businesses.map((b,i)=>
+    `<div class="entry"><span class="badge">${b.status}</span>
+      <button type="button" class="del" onclick="delBiz(${i})">ลบ</button>
+      <div class="et">${b.name}</div>
+      <div class="es">${[b.type,b.area].filter(Boolean).join(' · ')}</div>
+      <div class="es" style="margin-top:4px">${b.perks.length?'สิทธิพิเศษ: '+b.perks.join(' / '):'ยังไม่ระบุสิทธิพิเศษ'}</div>
+    </div>`).join('');
+}
+
+$('form').addEventListener('submit',ev=>{
+  ev.preventDefault();
+  const g=document.querySelector('input[name=g]:checked');
+  const out={
+    student_id:$('sid').value.replace(/\D/g,'')||null,
+    title_th:$('title').value||null, academic_rank:$('rank').value||null,
+    first_name_th:clean($('fn').value)||null, last_name_th:clean($('ln').value)||null,
+    nickname:clean($('nick').value)||null, birthdate:$('dob').value||null, gender:g?g.value:null,
+    mobile:$('mobile').value.replace(/\D/g,'')||null, email:clean($('email').value).toLowerCase()||null,
+    line_id:clean($('lineid').value)||null, linkedin:clean($('linkedin').value)||null,
+    postcode:$('post').value||null, province:$('prov').value||null, address_line:clean($('addr').value)||null,
+    bio:clean($('bio').value)||null,
+    privacy:{mobile:$('hide_mobile').checked,email:$('hide_email').checked,
+             line_id:$('hide_lineid').checked,linkedin:$('hide_linkedin').checked,address:$('hide_addr').checked},
+    work_status:$('ws').value||null,
+    jobs:jobs,
+    pe_license_status:$('pe').value||null,
+    pe_licenses:licenses,
+    business_program_interest:$('bizOpt').checked,
+    businesses:businesses,
+    profile_complete:true, updated_at:new Date().toISOString()
+  };
+  const s=$('summary');s.textContent='บันทึกข้อมูลโปรไฟล์เรียบร้อย — payload:\n\n'+JSON.stringify(out,null,2);
+  s.classList.add('show');s.scrollIntoView({behavior:'smooth'});
+});
+</script>
+<div class="cm-sign"><img src="/logo.png" alt=""><span>สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</span></div>
+</body>
+</html>

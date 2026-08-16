@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMUEAA — Workflow การรับสมัครสมาชิก</title>
+<style>
+  :root{
+    --paper:#faf7f6; --surface:#ffffff; --sheet:#fbf9f8;
+    --ink:#2a1f1f; --muted:#7c7070; --line:#ece2e2;
+    --maroon:#8a1818; --maroon-d:#5e1010; --maroon-soft:#f4e9e9;
+    --gold:#a9772e; --green:#2f8f5b; --amber:#b8791b; --blue:#3a6ea5; --violet:#6a4a8f;
+    --shadow:0 1px 2px rgba(60,20,20,.05),0 6px 20px rgba(60,20,20,.06);
+    --font: "Sarabun","Noto Sans Thai","Tahoma",system-ui,-apple-system,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#161011; --surface:#1f1718; --sheet:#f7f2f2;
+      --ink:#f1e9e9; --muted:#a89c9c; --line:#352829;
+      --maroon:#e79a9a; --maroon-d:#f2c3c3; --maroon-soft:#2c1c1d;
+      --gold:#d4a24e; --green:#4bbd82; --amber:#d69a3a; --blue:#7aa9d8; --violet:#a98fce;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#161011; --surface:#1f1718; --sheet:#f7f2f2;
+    --ink:#f1e9e9; --muted:#a89c9c; --line:#352829;
+    --maroon:#e79a9a; --maroon-d:#f2c3c3; --maroon-soft:#2c1c1d;
+    --gold:#d4a24e; --green:#4bbd82; --amber:#d69a3a; --blue:#7aa9d8; --violet:#a98fce;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --paper:#faf7f6; --surface:#ffffff; --sheet:#fbf9f8;
+    --ink:#2a1f1f; --muted:#7c7070; --line:#ece2e2;
+    --maroon:#8a1818; --maroon-d:#5e1010; --maroon-soft:#f4e9e9;
+    --gold:#a9772e; --green:#2f8f5b; --amber:#b8791b; --blue:#3a6ea5; --violet:#6a4a8f;
+    --shadow:0 1px 2px rgba(60,20,20,.05),0 6px 20px rgba(60,20,20,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);line-height:1.55;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 28px 64px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--maroon);font-weight:700}
+  h1{font-size:29px;line-height:1.2;margin:8px 0 6px;text-wrap:balance;font-weight:700}
+  .lead{color:var(--muted);font-size:15.5px;max-width:70ch;margin:0}
+  h2{font-size:18px;margin:44px 0 4px;font-weight:700}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 18px}
+
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:820px){.cards{grid-template-columns:1fr 1fr}}
+  @media(max-width:540px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:16px 16px 15px;
+    box-shadow:var(--shadow);border-top:3px solid var(--c,var(--maroon))}
+  .card .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--c,var(--maroon));
+    background:color-mix(in srgb,var(--c,var(--maroon)) 12%,transparent);padding:2px 9px;border-radius:20px;margin-bottom:9px}
+  .card h3{font-size:15.5px;margin:0 0 3px;font-weight:700}
+  .card .trg{font-size:12.5px;color:var(--muted);margin:0 0 10px}
+  .card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:12.5px}
+  .card dt{color:var(--muted)}
+  .card dd{margin:0;font-weight:600}
+
+  .sheet{background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:22px 18px;margin-top:6px;
+    box-shadow:var(--shadow);overflow-x:auto}
+  .sheet .mermaid{min-width:640px;display:flex;justify-content:center}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;background:var(--surface);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  thead th{background:var(--maroon);color:#fff;text-align:left;padding:10px 12px;font-weight:600;font-size:12.5px}
+  tbody td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+  tbody tr:nth-child(even){background:color-mix(in srgb,var(--maroon-soft) 55%,transparent)}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:20px;color:#fff}
+  .p-green{background:var(--green)} .p-amber{background:var(--amber)} .p-blue{background:var(--blue)} .p-maroon{background:var(--maroon)}
+
+  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:14px 0 2px;font-size:12.5px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  .decide{background:var(--maroon-soft);border:1px solid color-mix(in srgb,var(--maroon) 25%,var(--line));
+    border-radius:13px;padding:16px 18px;margin-top:14px}
+  .decide h3{margin:0 0 8px;font-size:14px;color:var(--maroon-d)}
+  .decide ul{margin:0;padding-left:18px;font-size:13.5px;display:grid;gap:5px}
+  .foot{color:var(--muted);font-size:12px;margin-top:34px;border-top:1px solid var(--line);padding-top:14px}
+
+  .themebtn{position:fixed;top:14px;right:14px;z-index:10;background:var(--surface);color:var(--ink);
+    border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:12.5px;font-weight:600;
+    cursor:pointer;box-shadow:var(--shadow);font-family:var(--font)}
+</style>
+<link rel="icon" href="/logo.png">
+<link rel="stylesheet" href="/assets/brand.css">
+</head>
+<body>
+<button class="themebtn" id="tt">◐ สลับสว่าง/มืด</button>
+<div class="wrap">
+  <div class="cm-masthead">
+    <div class="cm-crest cm-crest--tiny"><img src="/logo.png" alt="ตราสมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มช."></div>
+    <div class="cm-txt">
+      <div class="cm-th">สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มช.</div>
+      <div class="cm-en">CMU Engineering Alumni Association</div>
+    </div>
+  </div>
+  <nav style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px">
+    <a href="/" style="background:transparent;color:var(--maroon);border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">ฟอร์มสมัคร</a>
+    <a href="/consent" style="background:transparent;color:var(--maroon);border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">เชื่อมต่อ LINE</a>
+    <a href="/profile" style="background:transparent;color:var(--maroon);border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">โปรไฟล์เต็ม</a>
+    <a href="/workflow" style="background:#8a1818;color:#fff;border:1px solid #8a1818;border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">Workflow</a>
+    <a href="/privacy" style="background:transparent;color:var(--maroon);border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:600;text-decoration:none">นโยบายฯ</a>
+  </nav>
+  <div class="eyebrow">สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มช.</div>
+  <h1>ผังการรับสมัครและอัปเดตข้อมูลสมาชิก</h1>
+  <p class="lead">ตามมติที่ประชุม กำหนดให้ใช้ LINE เป็นช่องทางหลักในการติดต่อและยืนยันตัวตนสมาชิก ทั้งขั้นตอนสมัคร การอัปเดตข้อมูล และการยืนยันเข้าร่วมงาน ส่วนอีเมลและช่องทางอื่นถือเป็นช่องทางเสริม ทุกช่องทางใช้ขั้นตอนการทำงานชุดเดียวกัน โดยขอข้อมูลเท่าที่จำเป็นในครั้งแรก แล้วเก็บส่วนที่เหลือภายหลัง</p>
+
+  <h2>1. ช่องทางการรับสมัคร</h2>
+  <p class="sub">แต่ละช่องทางต่างกันที่วิธีเข้าถึงและข้อมูลที่ขอในครั้งแรก</p>
+  <div class="cards">
+    <div class="card" style="--c:var(--maroon)">
+      <span class="tag">สมัครใหม่</span>
+      <h3>สมัครเองผ่านเว็บ</h3>
+      <p class="trg">เข้าเว็บไซต์หรือกดลิงก์สมัคร</p>
+      <dl><dt>ขั้นต่ำ</dt><dd>ครบตามแบบฟอร์ม</dd><dt>สถานะ</dt><dd>สมาชิก ข้อมูลครบ</dd><dt>เติมทีหลัง</dt><dd>—</dd></dl>
+    </div>
+    <div class="card" style="--c:var(--green)">
+      <span class="tag">ลงทะเบียนหน้างาน</span>
+      <h3>ลงทะเบียนด่วนหน้างาน</h3>
+      <p class="trg">สแกน QR หน้างาน และเพิ่มเพื่อน LINE</p>
+      <dl><dt>ขั้นต่ำ</dt><dd>รหัสนักศึกษา ชื่อ และช่องทางติดต่อ</dd><dt>สถานะ</dt><dd>สมาชิก ข้อมูลยังไม่ครบ</dd><dt>เติมทีหลัง</dt><dd>หลังจบงาน</dd></dl>
+    </div>
+    <div class="card" style="--c:var(--blue)">
+      <span class="tag">อบรมและสัมมนา</span>
+      <h3>ลงทะเบียนอบรม</h3>
+      <p class="trg">ลิงก์ในอีเมลเชิญเข้าร่วมอบรม</p>
+      <dl><dt>ขั้นต่ำ</dt><dd>รหัสนักศึกษาและการยืนยันเข้าร่วม</dd><dt>สถานะ</dt><dd>สมาชิก และลงทะเบียนกิจกรรม</dd><dt>เติมทีหลัง</dt><dd>ตอนยืนยันสิทธิ์เข้าร่วม</dd></dl>
+    </div>
+    <div class="card" style="--c:var(--gold)">
+      <span class="tag">อัปเดต</span>
+      <h3>ขออัปเดตข้อมูล</h3>
+      <p class="trg">สมาชิกเดิมกดลิงก์อัปเดตข้อมูล</p>
+      <dl><dt>ขั้นต่ำ</dt><dd>ดึงข้อมูลเดิมมาแสดง</dd><dt>สถานะ</dt><dd>คงสถานะเดิม</dd><dt>เติมทีหลัง</dt><dd>แก้เฉพาะส่วนที่เปลี่ยน</dd></dl>
+    </div>
+    <div class="card" style="--c:var(--violet)">
+      <span class="tag">ยืนยันสมาชิกเดิม</span>
+      <h3>ปลุกสมาชิกเดิม</h3>
+      <p class="trg">ส่งข้อความเชิญผ่าน LINE และอีเมล</p>
+      <dl><dt>ขั้นต่ำ</dt><dd>จับคู่จากอีเมลหรือ LINE</dd><dt>สถานะ</dt><dd>กลับมาใช้งาน</dd><dt>เติมทีหลัง</dt><dd>พร้อมยืนยันตัวตน</dd></dl>
+    </div>
+    <div class="card" style="--c:var(--amber)">
+      <span class="tag">งานประชาสัมพันธ์</span>
+      <h3>เชิญผ่านงานประชาสัมพันธ์</h3>
+      <p class="trg">ประกาศพร้อมแนบลิงก์สมัคร</p>
+      <dl><dt>ขั้นต่ำ</dt><dd>เหมือนสมัครใหม่</dd><dt>สถานะ</dt><dd>สมาชิก ข้อมูลครบ</dd><dt>เติมทีหลัง</dt><dd>บันทึกที่มาของผู้สมัคร</dd></dl>
+    </div>
+  </div>
+
+  <h2>2. ประเภทสมาชิก</h2>
+  <p class="sub">นักศึกษาปัจจุบันยังไม่มีข้อมูลอาชีพและที่ทำงาน จึงเก็บข้อมูลพื้นฐานไว้ก่อน แล้วตามเก็บเพิ่มเมื่อสำเร็จการศึกษา</p>
+  <div class="cards" style="grid-template-columns:1fr 1fr">
+    <div class="card" style="--c:var(--blue)">
+      <span class="tag">นักศึกษาปัจจุบัน</span>
+      <h3>เก็บข้อมูลพื้นฐานก่อน</h3>
+      <p class="trg">ยังเรียนอยู่ · ยังไม่มีอาชีพ/ที่ทำงาน</p>
+      <dl>
+        <dt>เก็บตอนสมัคร</dt><dd>ชื่อ-สกุล · รหัสนักศึกษา · ที่อยู่ <span style="color:var(--muted);font-weight:400">(+ ภาควิชา, ติดต่อ — แนะนำ)</span></dd>
+        <dt>ยังไม่เก็บ</dt><dd style="color:var(--amber)">อาชีพ ที่ทำงาน และตำแหน่ง</dd>
+        <dt>สถานะ</dt><dd>สมาชิกสถานะปกติ <span style="color:var(--muted);font-weight:400">(รอเพิ่มข้อมูลอาชีพ)</span></dd>
+        <dt>อัปเดตเมื่อ</dt><dd>จบการศึกษา / เริ่มทำงาน</dd>
+      </dl>
+    </div>
+    <div class="card" style="--c:var(--green)">
+      <span class="tag">ศิษย์เก่า (นักศึกษาเก่า)</span>
+      <h3>เก็บข้อมูลครบ</h3>
+      <p class="trg">จบแล้ว / ทำงานแล้ว</p>
+      <dl>
+        <dt>เก็บตอนสมัคร</dt><dd>ข้อมูลพื้นฐาน <strong>+ อาชีพ · ที่ทำงาน/ตำแหน่ง · ประเภทธุรกิจ</strong></dd>
+        <dt>สถานะ</dt><dd>สมาชิก ข้อมูลครบ</dd>
+        <dt>อัปเดตเมื่อ</dt><dd>เปลี่ยนงาน / ข้อมูลเปลี่ยน</dd>
+      </dl>
+    </div>
+  </div>
+
+  <h2>3. ขั้นตอนการทำงานของระบบ</h2>
+  <p class="sub">ตั้งแต่การระบุตัวตน ตรวจสอบข้อมูลซ้ำ แยกประเภทสมาชิก ขอความยินยอม จนถึงบันทึกเข้าฐานข้อมูลกลาง</p>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--maroon)"></i>ช่องทางเข้าสู่ระบบ</span>
+    <span><i class="dot" style="background:var(--gold)"></i>จุดตัดสิน</span>
+    <span><i class="dot" style="background:var(--violet)"></i>เข้าสู่ระบบด้วย LINE</span>
+    <span><i class="dot" style="background:var(--blue)"></i>สมาชิก (นักศึกษาปัจจุบัน)</span>
+    <span><i class="dot" style="background:var(--green)"></i>สมาชิก (ข้อมูลครบ)</span>
+    <span><i class="dot" style="background:var(--amber)"></i>สมาชิก (ข้อมูลยังไม่ครบ)</span>
+    <span><i class="dot" style="background:var(--ink)"></i>ฐานข้อมูล</span>
+  </div>
+  <div class="sheet">
+<pre class="mermaid">
+flowchart TD
+  classDef entry fill:#8a1818,stroke:#5e1010,color:#ffffff;
+  classDef dec fill:#ffffff,stroke:#a9772e,color:#5e1010,stroke-width:2px;
+  classDef proc fill:#f4e9e9,stroke:#cab0b0,color:#2a1f1f;
+  classDef good fill:#2f8f5b,stroke:#1f6e43,color:#ffffff;
+  classDef warn fill:#b8791b,stroke:#8f5e12,color:#ffffff;
+  classDef stu fill:#3a6ea5,stroke:#274d73,color:#ffffff;
+  classDef auto fill:#6a4a8f,stroke:#4a3266,color:#ffffff;
+  classDef db fill:#2a1f1f,stroke:#000000,color:#ffffff;
+
+  S1["สมัครผ่านเว็บไซต์"]:::entry
+  S2["ลงทะเบียนหน้างาน"]:::entry
+  S3["สมัครอบรม สัมมนา"]:::entry
+  S4["ขออัปเดตข้อมูล"]:::entry
+  S5["ยืนยันสมาชิกเดิม"]:::entry
+  S6["งานประชาสัมพันธ์"]:::entry
+
+  S1 --> LL
+  S2 --> LL
+  S3 --> LL
+  S4 --> LL
+  S5 --> LL
+  S6 --> LL
+  LL["เชื่อมต่อบัญชี LINE (ช่องทางหลัก)<br/>กดอนุญาตครั้งเดียว ได้ LINE ID ชื่อ อีเมล<br/>และความยินยอม กรอกเองเพียงรหัสนักศึกษา"]:::auto
+  LL --> ID
+  LL -.->|ไม่สะดวกใช้ LINE| ALT["ช่องทางเสริม<br/>กรอกข้อมูลเอง หรือให้เจ้าหน้าที่ช่วยบันทึก"]:::proc
+  ALT --> ID
+
+  ID{"ระบุตัวตน<br/>รหัสนักศึกษา หรือ บัญชี LINE"}:::dec
+  ID --> MATCH{"มีในฐานข้อมูลแล้ว?"}:::dec
+  MATCH -->|มีแล้ว| UPD["ดึงข้อมูลเดิมมาให้แก้ไข"]:::proc
+  MATCH -->|ยังไม่มี| NEW["สร้างระเบียนใหม่"]:::proc
+  UPD --> TYPE
+  NEW --> TYPE
+  TYPE{"นักศึกษาปัจจุบัน<br/>หรือ ศิษย์เก่า?"}:::dec
+
+  TYPE -->|นักศึกษาปัจจุบัน| CUR["เก็บชื่อ รหัสนักศึกษา ที่อยู่<br/>ภาควิชา และข้อมูลติดต่อ"]:::proc
+  TYPE -->|ศิษย์เก่า| ALU["เก็บข้อมูลข้างต้น พร้อมอาชีพ<br/>ที่ทำงาน และตำแหน่ง"]:::proc
+
+  CUR --> CONc["ขอความยินยอมตาม PDPA"]:::proc
+  ALU --> CONa["ขอความยินยอมตาม PDPA"]:::proc
+
+  CONc --> SC["สมาชิก (นักศึกษาปัจจุบัน)<br/>รอเพิ่มข้อมูลอาชีพ"]:::stu
+  CONa --> QF{"ข้อมูลครบ?"}:::dec
+  QF -->|ครบ| AC["สมาชิก ข้อมูลครบ"]:::good
+  QF -->|ยังไม่ครบ| AI["สมาชิก ข้อมูลยังไม่ครบ"]:::warn
+  AI -.->|แจ้งเตือนทาง LINE| FILL["เพิ่มข้อมูลภายหลัง"]:::proc
+  FILL --> AC
+
+  SC -.->|สำเร็จการศึกษา| CAR["เพิ่มอาชีพและที่ทำงาน"]:::proc
+  CAR --> AC
+
+  AC --> DB[("ฐานข้อมูลสมาชิก<br/>ผูกบัญชี LINE ไว้กับรหัสนักศึกษา")]:::db
+  AI --> DB
+  SC --> DB
+
+  DB -.->|มีกิจกรรม| EV["ยืนยันเข้าร่วมงานผ่าน LINE<br/>บัตรสมาชิกและ QR ประจำตัว"]:::auto
+  EV -.-> DB
+</pre>
+  </div>
+
+  <h2>4. LINE เป็นช่องทางหลัก</h2>
+  <p class="sub">ตามมติที่ประชุม ให้ใช้ LINE เป็นช่องทางหลักในการติดต่อและยืนยันตัวตนสมาชิก ช่องทางอื่นถือเป็นช่องทางเสริม</p>
+  <div class="cards" style="grid-template-columns:1.25fr 1fr">
+    <div class="card" style="--c:var(--violet)">
+      <span class="tag">ช่องทางหลัก</span>
+      <h3>เชื่อมต่อบัญชี LINE</h3>
+      <dl>
+        <dt>1</dt><dd>สแกน QR หรือกดลิงก์ เพื่อเปิดหน้าสมัครในแอป LINE พร้อมเพิ่มเพื่อนบัญชีทางการ</dd>
+        <dt>2</dt><dd>กดอนุญาตครั้งเดียว ระบบได้ชื่อ อีเมล และรหัสผู้ใช้ LINE</dd>
+        <dt>3</dt><dd>ผู้สมัครกรอกเองเพียงรหัสนักศึกษา ระบบคำนวณรุ่นเกียร์ให้</dd>
+        <dt>4</dt><dd>ให้ความยินยอมตาม PDPA ในหน้าจอเดียวกัน</dd>
+      </dl>
+      <p class="trg" style="margin:10px 0 0;color:var(--violet);font-weight:600">ใช้บัญชี LINE เดียวกันนี้ยืนยันตัวตนได้ทุกครั้งที่ติดต่อกับสมาคม</p>
+    </div>
+    <div class="card">
+      <span class="tag" style="--c:var(--muted)">ช่องทางเสริม</span>
+      <h3>สำหรับผู้ที่ไม่สะดวกใช้ LINE</h3>
+      <dl>
+        <dt>กรอกเอง</dt><dd>กรอกข้อมูลผ่านเว็บไซต์ตามปกติ</dd>
+        <dt>อีเมล</dt><dd>ส่งลิงก์ยืนยันไปยังอีเมลที่มีในฐานข้อมูล</dd>
+        <dt>เจ้าหน้าที่</dt><dd>ตัวแทนรุ่นหรือเจ้าหน้าที่บันทึกข้อมูลให้หน้างาน</dd>
+      </dl>
+      <p class="trg" style="margin:10px 0 0;color:var(--muted);font-weight:600">ใช้เท่าที่จำเป็น ไม่ต้องติดตามซ้ำหากไม่ได้รับการตอบกลับ</p>
+    </div>
+  </div>
+
+  <h2>5. การยืนยันเข้าร่วมงาน</h2>
+  <p class="sub">ใช้บัญชี LINE ที่ผูกไว้ยืนยันตัวตนหน้างาน แทนการเขียนชื่อหรือค้นหาจากรายชื่อ</p>
+  <div class="cards" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="card" style="--c:var(--maroon)">
+      <span class="tag">ก่อนงาน</span>
+      <h3>ส่งบัตรเข้างาน</h3>
+      <p class="trg">แจ้งกำหนดการและส่งบัตรสมาชิกพร้อม QR ประจำตัวให้ทาง LINE</p>
+    </div>
+    <div class="card" style="--c:var(--green)">
+      <span class="tag">หน้างาน</span>
+      <h3>สแกนยืนยันตัวตน</h3>
+      <p class="trg">เจ้าหน้าที่สแกน QR ของสมาชิก หรือให้สมาชิกสแกน QR ของงาน ระบบบันทึกเวลาเข้าร่วมทันที</p>
+    </div>
+    <div class="card" style="--c:var(--blue)">
+      <span class="tag">หลังงาน</span>
+      <h3>บันทึกและติดตามผล</h3>
+      <p class="trg">เก็บประวัติการเข้าร่วมรายบุคคล ส่งภาพกิจกรรม และเชิญอัปเดตข้อมูลที่ยังไม่ครบ</p>
+    </div>
+  </div>
+  <div class="note" style="margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:11px 14px">
+    ผู้ที่ไม่ได้ผูกบัญชี LINE ให้เจ้าหน้าที่ค้นจากชื่อหรือรหัสนักศึกษาแล้วบันทึกการเข้าร่วมให้ที่หน้างาน
+  </div>
+
+  <h2>6. ทำเนียบธุรกิจศิษย์เก่า</h2>
+  <p class="sub">สมาชิกที่มีกิจการของตนเองแจ้งความประสงค์ไว้ในแบบฟอร์ม จากนั้นสมาคมจึงติดต่อกลับเพื่อหารือเงื่อนไขสิทธิพิเศษที่เหมาะกับแต่ละประเภทกิจการ</p>
+  <div class="cards">
+    <div class="card" style="--c:var(--maroon)">
+      <span class="tag">ขั้นที่ 1</span>
+      <h3>แจ้งความประสงค์</h3>
+      <p class="trg">สมาชิกกรอกชื่อกิจการ ประเภท พื้นที่ให้บริการ และช่องทางติดต่อ พร้อมเลือกรูปแบบสิทธิพิเศษที่ยินดีมอบ หรือเลือกขอหารือภายหลัง</p>
+    </div>
+    <div class="card" style="--c:var(--amber)">
+      <span class="tag">ขั้นที่ 2</span>
+      <h3>หารือเงื่อนไข</h3>
+      <p class="trg">เจ้าหน้าที่ติดต่อกลับเพื่อกำหนดสิทธิพิเศษให้เหมาะกับกิจการ ร้านอาหารและคาเฟ่อาจเป็นส่วนลด ส่วนกิจการประเภทอื่นพิจารณารูปแบบที่เหมาะสมเป็นรายกรณี</p>
+    </div>
+    <div class="card" style="--c:var(--green)">
+      <span class="tag">ขั้นที่ 3</span>
+      <h3>เผยแพร่และประชาสัมพันธ์</h3>
+      <p class="trg">นำกิจการขึ้นทำเนียบธุรกิจสมาชิก และประชาสัมพันธ์ผ่านช่องทางของสมาคมให้ศิษย์เก่ารับทราบและไปใช้บริการ</p>
+    </div>
+  </div>
+  <div class="note" style="margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:11px 14px">
+    ประโยชน์ต่อเจ้าของกิจการคือการเข้าถึงกลุ่มลูกค้าที่เป็นศิษย์เก่าและครอบครัว รวมถึงการเชื่อมโยงเครือข่ายธุรกิจระหว่างรุ่น
+  </div>
+
+  <h2>7. สรุปเปรียบเทียบแต่ละช่องทาง</h2>
+  <p class="sub">ความแตกต่างอยู่ที่ข้อมูลที่ขอและสถานะเริ่มต้นของสมาชิก</p>
+  <table>
+    <thead><tr><th>สถานการณ์</th><th>ช่องทาง / trigger</th><th>ข้อมูลขั้นต่ำ</th><th>สถานะเริ่มต้น</th><th>เติมข้อมูลเมื่อไหร่</th></tr></thead>
+    <tbody>
+      <tr><td>สมัครผ่านเว็บไซต์</td><td>เข้าเว็บไซต์หรือกดลิงก์</td><td>ครบตามแบบฟอร์ม</td><td><span class="pill p-green">สมาชิก</span></td><td>—</td></tr>
+      <tr><td>ลงทะเบียนด่วนหน้างาน</td><td>สแกน QR และเพิ่มเพื่อน LINE</td><td>รหัสนักศึกษา ชื่อ และช่องทางติดต่อ</td><td><span class="pill p-amber">ข้อมูลยังไม่ครบ</span></td><td>หลังจบงาน แจ้งเตือนทาง LINE</td></tr>
+      <tr><td>ลงทะเบียนอบรมและสัมมนา</td><td>ลิงก์ในอีเมลเชิญ</td><td>รหัสนักศึกษาและการยืนยันเข้าร่วม</td><td><span class="pill p-blue">สมาชิก + กิจกรรม</span></td><td>ตอนยืนยันสิทธิ์เข้าอบรม</td></tr>
+      <tr><td>ขออัปเดตข้อมูล</td><td>สมาชิกเดิมกดลิงก์</td><td>ดึงข้อมูลเดิมมาแสดง แก้เฉพาะส่วนที่เปลี่ยน</td><td><span class="pill p-maroon">สถานะเดิม</span></td><td>ทันที</td></tr>
+      <tr><td>ยืนยันสมาชิกเดิม</td><td>ส่งข้อความผ่าน LINE และอีเมล</td><td>จับคู่จากอีเมลหรือ LINE</td><td><span class="pill p-green">กลับมาใช้งาน</span></td><td>พร้อมยืนยันตัวตน</td></tr>
+      <tr><td>งานประชาสัมพันธ์</td><td>ประกาศพร้อมลิงก์สมัคร</td><td>เหมือนสมัครใหม่</td><td><span class="pill p-green">สมาชิก</span></td><td>บันทึกที่มาของผู้สมัคร</td></tr>
+    </tbody>
+  </table>
+
+  <div class="decide" style="background:#eef6f0;border-color:#c3e0cd">
+    <h3 style="color:#1f6e43">มติที่ประชุม</h3>
+    <ul>
+      <li>ใช้ LINE เป็นช่องทางหลักในการติดต่อ ยืนยันตัวตน และติดตามข้อมูลสมาชิก</li>
+      <li>อีเมลและช่องทางอื่นเป็นช่องทางเสริม ใช้เท่าที่จำเป็น และไม่ต้องติดตามซ้ำหากไม่ได้รับการตอบกลับ</li>
+      <li>การยืนยันเข้าร่วมงานทุกกิจกรรม ให้ดำเนินการผ่าน LINE เป็นหลัก</li>
+    </ul>
+  </div>
+
+  <div class="decide">
+    <h3>ประเด็นที่ต้องพิจารณาต่อ</h3>
+    <ul>
+      <li>การแยกนักศึกษาปัจจุบันกับศิษย์เก่าตอนสมัคร จะให้ผู้สมัครเลือกเอง หรือให้ระบบคำนวณจากรหัสนักศึกษา</li>
+      <li>ช่วงเวลาที่จะขอข้อมูลอาชีพและที่ทำงานเพิ่ม เช่น แจ้งเตือนรายปี ตอนเข้าสู่ระบบ หรือช่วงงานรับปริญญา</li>
+      <li>การอนุมัติสมาชิกจะให้ระบบทำอัตโนมัติหรือให้เจ้าหน้าที่ตรวจสอบ</li>
+      <li>แผนรองรับกรณีสมาชิกเปลี่ยนบัญชี LINE ซึ่งทำให้รหัสผู้ใช้เดิมใช้ไม่ได้</li>
+      <li>งานที่ต้องเตรียมล่วงหน้า ได้แก่ การยื่นขอสิทธิ์เข้าถึงอีเมลจาก LINE การตั้งค่าระบบเข้าสู่ระบบด้วย LINE และแคมเปญเชิญสมาชิกเดิมเพิ่มเพื่อนบัญชีทางการ</li>
+    </ul>
+  </div>
+
+  <p class="foot">ผังการทำงานระบบรับสมัครสมาชิก สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', theme: 'base', flowchart: { htmlLabels: true, curve: 'basis' } });
+  var b = document.getElementById('tt');
+  b.addEventListener('click', function(){
+    var r = document.documentElement;
+    var cur = r.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  });
+</script>
+<div class="cm-sign"><img src="/logo.png" alt=""><span>สมาคมนักศึกษาเก่าคณะวิศวกรรมศาสตร์ มหาวิทยาลัยเชียงใหม่</span></div>
+</body>
+</html>
